@@ -26,7 +26,7 @@ In order to get all data held within another `.pdf`, `.txt` or `.docx` file, you
 
 ### 2. Optional and Default Paragraph Replacement
 Suppose you are formatting cover letters, you may wish to tailor your application to a specific field such as AI, Machine Learning, or Software Engineering, but reformatting paragraphs each time can be monotonous, thats where optional and default paragraph replacement comes in to play.
-In order to start a section of paragraph replacement, use the ```?``` character to signal the beginning of a section. Within this section, you can use the ```#``` character to define an optional paragraph. To do this, start the line with ```#name``` where name is the name of the column to check against in the spreadsheet.
+In order to start a section of paragraph replacement, use the ```? field``` character to signal the beginning of a section. Within this section, you can use the ```#``` character to define an optional paragraph. To do this, start the line with ```#name``` where name is the name of the column to check against in the spreadsheet.
 <br>
 For example, consider you have a column called `field` in your program, with possible values of `computer_science`, `programming` and `artificial_intelligence`, then you would have up to 3 `#` sections such as `#programming` followed by paragraph text. This section will run until it hits the next `#`, `~` or `?` character.
 <br>
@@ -64,16 +64,20 @@ In this case, I will provide an abstract email for a job application:
 ```
 Dear [hiring_manager_name:Hiring Manager],
 
-I hope this email finds you in good health. I am a student at university x, hoping to seek an internship in [field_name] at [company_name]. I would like to apply here as {what do you know about company x; here is a copy of my cv, use it to point out why I am a fit for [company_name] [cv.pdf]; now use this data to finish off the paragraph: [self]}.
+I hope this email finds you in good health. I am a student at university x, hoping to seek an internship in [field name] at [company name]. I would like to apply here as {what do you know about company x; here is a copy of my cv, use it to point out why I am a fit for [company name] [cv.pdf]; now use this data to finish off the paragraph: [self]}.
 
-?
-#computer_science Paragraph here containing text about your experience in computer_science 
+? field name
+#computer_science 
+Paragraph here containing text about your experience in computer_science 
 
-#software_development Same but for software development
+#software_development 
+Same but for software development
 
-#artificial_intellgence Same but for artificial intelligence
+#artificial_intellgence 
+Same but for artificial intelligence
 
-~ A default paragraph if you want
+~ 
+A default paragraph if you want
 
 ?
 
