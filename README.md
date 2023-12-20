@@ -9,6 +9,7 @@ When you run the program, you will be given the option to pass a spreadsheet fil
 
 ## Setting up user data
 In order to reformat text, you will need to provide a template file. If you wish to send emails on top of this, you will need to also include a spreadsheet file. You will also need to reformat part of the code and change some data to use your provided email in the email client. More details of this will be provided upon implementation of the emailing system.
+There is also a plan to contain emails sent so that the user doesn't send the same email twice to any recipient.
 
 
 ## Formatting the template
