@@ -1,16 +1,6 @@
 import csv
 import pandas as pd
 
-# Might need to refer to this later
-# Installing collected packages: pytz, tzdata, six, numpy, python-dateutil, pandas
-#  WARNING: The script f2py.exe is installed in 'C:\Users\rayan\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\Scripts' which is not on PATH.
-#  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-#
-
-
-# TODO:
-#       csv file reading
-#       xlsx file reading
 
 class SpreadsheetFile:
     def __init__(self):
@@ -19,6 +9,7 @@ class SpreadsheetFile:
 
 
 def read_csv_file(filename):
+    # Reads a csv file and returns a SpreadsheetFile
     spreadsheet_file = SpreadsheetFile()
     with open(filename, 'r') as file:
         csvreader = csv.reader(file)
@@ -29,6 +20,8 @@ def read_csv_file(filename):
                 continue
             record = {}
             for i in range(len(headers)):
+                if headers[i] == '':
+                    continue
                 if row[i] == '':
                     record[headers[i]] = None
                 else:
@@ -37,7 +30,9 @@ def read_csv_file(filename):
             spreadsheet_file.curr_row += 1
     return spreadsheet_file
 
+
 def read_xlsx_file(file):
+    # Reads an xlsx file and returns a SpreadsheetFile
     spreadsheet_file = SpreadsheetFile()
     df = pd.read_excel(file)
     records = df.values
@@ -62,11 +57,11 @@ def read_xlsx_file(file):
         spreadsheet_file.records.append(record)
     if diff_format:
         spreadsheet_file.records = spreadsheet_file.records[1:]
-    print(spreadsheet_file.records)
     return spreadsheet_file
 
 
 def remove_fake_nans(records):
+    # Removes rows and columns that are all NaN
     fixed_records_rows = []
     # first remove redundant rows
     for record in records:
@@ -92,7 +87,9 @@ def remove_fake_nans(records):
 
     return fixed_records
 
+
 def all_nans(record):
+    # Returns true if there are no undefined values in the record provided
     for val in record:
         if 'Unnamed:' in val:
             return True
