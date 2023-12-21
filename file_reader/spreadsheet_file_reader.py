@@ -25,13 +25,34 @@ def read_csv_file(filename):
         for row in csvreader:
             if spreadsheet_file.curr_row == 0:
                 headers = row
+                spreadsheet_file.curr_row += 1
                 continue
             record = {}
             for i in range(len(headers)):
-                record[headers[i]] = row[i]
+                if row[i] == '':
+                    record[headers[i]] = None
+                else:
+                    record[headers[i]] = row[i]
             spreadsheet_file.records.append(record)
+            spreadsheet_file.curr_row += 1
     return spreadsheet_file
 
 def read_xlsx_file(file):
+    spreadsheet_file = SpreadsheetFile()
     df = pd.read_excel(file)
-    print(df)
+    headers = df.keys().values
+    records = df.values
+
+    for row in records:
+        record = {}
+        for i in range(len(headers)):
+            val = row[i]
+            if pd.isna(val):
+                record[headers[i]] = None
+            else:
+                if isinstance(val, float):
+                    val = str(int(val))
+                record[headers[i]] = val
+
+        spreadsheet_file.records.append(record)
+    return spreadsheet_file
