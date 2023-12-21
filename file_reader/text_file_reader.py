@@ -3,6 +3,7 @@ import docx
 
 
 def read_txt_file(file):
+    # Reads a text file and outputs the entire contents of that file
     file = open(file, 'r')
     text = file.readlines()
     file.close()
@@ -10,24 +11,25 @@ def read_txt_file(file):
 
 
 def read_pdf_file(file):
-    txt_to_return = ""
+    # Reads the text from a pdf file and outputs it as a single string
+    text = ""
     file = PyPDF2.PdfReader(file)
     num_pages = len(file.pages)
     for i in range(num_pages):
-        txt_to_return += file.pages[i].extract_text()
-    return txt_to_return
+        text += file.pages[i].extract_text()
+    return text
 
 
 def read_docx_file(file):
+    # Reads the text from a docx file and outputs it as a single string
     doc = docx.Document(file)
-    txt_tp_return = ""
+    text = ""
     for para in doc.paragraphs:
 
-        # To be an exact replica of a .docx file, we must do this
-        if para.text == "":
-            txt_tp_return += " \n"
-        else:
-            txt_tp_return += para.text + "  " + "\n"
+        # To be in our desired format, we must do this
+        if para.text != "":
+            text += para.text + " "
+        text += " \n"
 
-    return txt_tp_return
+    return text
 
