@@ -1,0 +1,3 @@
+Hello, my name is [name]
+I am [age] years old
+I am doing a project in [project]
