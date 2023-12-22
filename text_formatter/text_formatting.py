@@ -1,8 +1,7 @@
 class TextFormatter:
 
-    def __init__(self, input_text, files, dictionary):
+    def __init__(self, input_text, dictionary):
         self.input_text = input_text                # The text to reformat
-        self.files = files                          # Any files that will be relevant in square formatting
         self.output_text = ""                       # The output text to return once the text is formatted correctly
         self.pos = 0                                # A position to keep track of the current formatting state
         self.dictionary = dictionary                # A record from a csv file, should be passed in as a mapping
@@ -87,7 +86,7 @@ class TextFormatter:
     def recurse(self, text):
         # To recurse over formatted text, e.g: squares nested within an optional
         # Note that nesting one optional block inside another is not implemented
-        formatter = TextFormatter(text, self.files, self.dictionary)
+        formatter = TextFormatter(text, self.dictionary)
         formatter.format_text()
         return formatter.output_text
 

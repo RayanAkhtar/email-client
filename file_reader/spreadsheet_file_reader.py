@@ -4,6 +4,7 @@ import pandas as pd
 
 class SpreadsheetFile:
     def __init__(self):
+        self.headers = []
         self.records = []                   # A list of records to loop through
         self.curr_row = 0                   # Keeping track of the users current row
 
@@ -15,10 +16,12 @@ def read_csv_file(filename):
         csvreader = csv.reader(file)
         for row in csvreader:
             if spreadsheet_file.curr_row == 0:
-                headers = row
+                spreadsheet_file.headers = row
                 spreadsheet_file.curr_row += 1
                 continue
             record = {}
+
+            headers = spreadsheet_file.headers
             for i in range(len(headers)):
                 if headers[i] == '':
                     continue
