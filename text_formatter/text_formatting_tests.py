@@ -10,7 +10,7 @@ class MyTestCase(unittest.TestCase):
     def test_simple_square(self):
         # A single check to see that strict replacement is working correctly
         dummy_text = "Hello [Greeting]"
-        formatter = TextFormatter(dummy_text, [], {"Greeting": "World"})
+        formatter = TextFormatter(dummy_text, {"Greeting": "World"})
         formatter.format_text()
         self.assertEqual("Hello World", formatter.output_text)
 
@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
             "Greeting 2": "World"
         }
 
-        formatter = TextFormatter(dummy_text, [], dictionary)
+        formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("Hello World", formatter.output_text)
@@ -38,7 +38,7 @@ class MyTestCase(unittest.TestCase):
             "Project Name": "text formatting"
         }
 
-        formatter = TextFormatter(dummy_text, [], dictionary)
+        formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
 
         self.assertEqual(
@@ -52,7 +52,7 @@ class MyTestCase(unittest.TestCase):
         # A check to see that you can have default values in strict replacement
         dummy_text = "The next word should be Blank: [Word:Blank]"
         dictionary = {}
-        formatter = TextFormatter(dummy_text, [], dictionary)
+        formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
         self.assertEqual("The next word should be Blank: Blank", formatter.output_text)
 
@@ -60,7 +60,7 @@ class MyTestCase(unittest.TestCase):
         # A check to see that ERROR will be returned when formatting without a key and default value
         dummy_text = "The next word should be ERROR: [Word]"
         dictionary = {}
-        formatter = TextFormatter(dummy_text, [], dictionary)
+        formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
         result = "The next word should be ERROR: ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
         self.assertEqual(result, formatter.output_text)
@@ -82,7 +82,7 @@ class MyTestCase(unittest.TestCase):
 
         ?"""
 
-        formatter = TextFormatter(input_text, [], {})
+        formatter = TextFormatter(input_text, {})
         formatter.format_text()
 
         self.assertEqual("", formatter.output_text)
@@ -93,7 +93,7 @@ class MyTestCase(unittest.TestCase):
         ~This is the default
         ?"""
 
-        formatter = TextFormatter(input_text, [], {})
+        formatter = TextFormatter(input_text, {})
         formatter.format_text()
 
         self.assertEqual("This is the default", formatter.output_text)
@@ -108,7 +108,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"1 option to search":"SUCCESS"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This should be the answer", formatter.output_text)
@@ -122,7 +122,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"1 option to search":"FAIL"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("ERROR: NO OPTION MATCH AND NO DEFAULT VALUE", formatter.output_text)
@@ -137,7 +137,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"1 option to search":"FAIL"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This is the default and should be the answer", formatter.output_text)
@@ -156,7 +156,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 1"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This should be the answer", formatter.output_text)
@@ -175,7 +175,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 2"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This should be the answer", formatter.output_text)
@@ -194,7 +194,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 3"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This should be the answer", formatter.output_text)
@@ -213,7 +213,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 4"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This is the default and should be the answer", formatter.output_text)
@@ -231,7 +231,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 1"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This should be the answer", formatter.output_text)
@@ -249,7 +249,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 2"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This should be the answer", formatter.output_text)
@@ -267,7 +267,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 3"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("This should be the answer", formatter.output_text)
@@ -286,7 +286,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 4"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("ERROR: NO OPTION MATCH AND NO DEFAULT VALUE", formatter.output_text)
@@ -301,7 +301,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 1"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("ERROR: MULTIPLE DEFAULTS", formatter.output_text)
@@ -318,7 +318,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 1"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("ERROR: MULTIPLE DEFAULTS", formatter.output_text)
@@ -339,7 +339,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"3 options to search":"SUCCESS 1"}
 
-        formatter = TextFormatter(input_text, [], dictionary)
+        formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
         self.assertEqual("ERROR: MULTIPLE DEFAULTS", formatter.output_text)
@@ -359,7 +359,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"planet": "World", "paragraph to choose": "p1", "name":"Rayan"}
 
-        formatter = TextFormatter(dummy_text, [], dictionary)
+        formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
 
         result = """Hello World
@@ -381,7 +381,7 @@ class MyTestCase(unittest.TestCase):
 
         dictionary = {"planet": "World", "paragraph to choose": "p1", "name":"Rayan", "project":"email client"}
 
-        formatter = TextFormatter(dummy_text, [], dictionary)
+        formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
 
         result = """Hello World

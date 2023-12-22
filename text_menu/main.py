@@ -1,7 +1,7 @@
 import text_menu.help as help
 import text_menu.emails as emails
 import text_menu.templates as templates
-
+import text_menu.io as io
 
 def menu():
     print("""Welcome to the AI Email Client:
@@ -10,7 +10,7 @@ def menu():
     3. Help                             # Not implemented
     4. Quit""")
 
-    choice = get_user_input(1, 4)
+    choice = io.get_user_input(1, 4)
     if choice == 1:
         templates.menu()
     elif choice == 2:
@@ -21,14 +21,5 @@ def menu():
         print("Exiting Program")
         exit(0)
 
-
-def get_user_input(lower_bound, upper_bound):
-    valid = False
-    while not valid:
-        choice = input(f"Please enter a number between {lower_bound} and {upper_bound}: ")
-        if choice.isnumeric() and lower_bound <= int(choice) <= upper_bound:
-            return int(choice)
-        else:
-            print("Please enter a valid integer within the correct range: ")
 
 
