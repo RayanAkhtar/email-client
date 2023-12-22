@@ -1,3 +1,6 @@
+import os
+from docx2pdf import convert
+from docx import Document
 
 
 def save_formatted_file(text_to_write, filename, extension, output_path="../output"):
@@ -19,8 +22,14 @@ def write_to_txt(text_to_write, filename, output_path):
 
 
 def write_to_pdf(text_to_write, filename, output_path):
-    pass
+    docx_path = write_to_docx(text_to_write, filename, output_path)
+    convert(docx_path, output_path + filename + ".pdf")
+    os.remove(docx_path)
 
 
 def write_to_docx(text_to_write, filename, output_path):
-    pass
+    doc = Document()
+    doc.add_paragraph(text_to_write)
+    docx_path = output_path + filename + ".docx"
+    doc.save(docx_path)
+    return docx_path
