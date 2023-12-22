@@ -2,54 +2,93 @@ import unittest
 import file_writer.file_writing as fw
 import file_reader.text_file_reader as tfr
 
+
 class MyTestCase(unittest.TestCase):
 
     ##############################   Txt Files   ##############################
     def test_write_txt_small(self):
+        # Tests to see that a txt file has been written correctly
         filename = 'txt_small'
         fw.save_formatted_file(small_text, filename, 'txt', "output/")
+        output_path = get_output_path(filename, 'txt', "output/")
+        if small_text not in tfr.read_txt_file(output_path):
+            assert False
+
 
     def test_write_txt_large(self):
+        # Tests to see that a large txt file has been written correctly
         filename = 'txt_large'
         fw.save_formatted_file(large_text, filename, 'txt', "output/")
+        output_path = get_output_path(filename, 'txt', "output/")
+        if large_text not in tfr.read_txt_file(output_path):
+            assert False
+
 
     def test_write_txt_paragraphs(self):
+        # Tests to see that multiple paragraphs can be written to a txt file correctly
         filename = 'txt_paragraphs'
         fw.save_formatted_file(paragraphs_text, filename, 'txt', "output/")
+        output_path = get_output_path(filename, 'txt', "output/")
+        if paragraphs_text not in tfr.read_txt_file(output_path):
+            assert False
 
 
     ##############################   Pdf Files   ##############################
 
     def test_write_pdf_small(self):
+        # Tests to see that a pdf file has been written correctly
         filename = 'pdf_small'
         fw.save_formatted_file(small_text, filename, 'pdf', "output/")
-
-    def test_write_pdf_large(self):
-        filename = 'pdf_large'
-        fw.save_formatted_file(large_text, filename, 'pdf', "output/")
+        output_path = get_output_path(filename, 'pdf', "output/")
+        if small_text not in tfr.read_pdf_file(output_path):
+            assert False
 
     def test_write_pdf_paragraphs(self):
+        # Tests to see that a pdf has been written to correctly
+        # Have to test this differently due to hidden whitespace
         filename = 'pdf_paragraphs'
         fw.save_formatted_file(paragraphs_text, filename, 'pdf', "output/")
+        output_path = get_output_path(filename, 'pdf', "output/")
+        to_test = "".join(paragraphs_text.split(" "))
+        testing = "".join(tfr.read_pdf_file(output_path).split(" "))
+        self.assertEqual(testing, to_test)
+
 
     ##############################   Docx Files   ##############################
 
     def test_write_docx_small(self):
+        # Tests to see that a small docx file has been written to correctly
         filename = 'docx_small'
         fw.save_formatted_file(small_text, filename, 'docx', "output/")
+        output_path = get_output_path(filename, 'docx', "output/")
+        if small_text not in tfr.read_docx_file(output_path):
+            assert False
+
 
     def test_write_docx_large(self):
+        # Tests to see that a large docx file has been written to correctly
         filename = 'docx_large'
         fw.save_formatted_file(large_text, filename, 'docx', "output/")
+        output_path = get_output_path(filename, 'docx', "output/")
+        if large_text not in tfr.read_docx_file(output_path):
+            assert False
 
     def test_write_docx_paragraphs(self):
+        # Tests to see that a docx file with paragraphs has been written to correctly
         filename = 'docx_paragraphs'
         fw.save_formatted_file(paragraphs_text, filename, 'docx', "output/")
+        output_path = get_output_path(filename, 'docx', "output/")
+        if paragraphs_text not in tfr.read_docx_file(output_path):
+            assert False
 
 
 if __name__ == '__main__':
     unittest.main()
 
+
+def get_output_path(file_name, extension, path):
+    # Gets the output path for a file
+    return path + file_name + "." + extension
 
 
 small_text = "Hello World!"
