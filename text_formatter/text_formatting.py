@@ -1,3 +1,8 @@
+import file_reader.file_reader as fr
+
+text_file_extensions = ["txt", "pdf", "docx"]
+
+
 class TextFormatter:
 
     def __init__(self, input_text, dictionary):
@@ -44,7 +49,9 @@ class TextFormatter:
     def square_format(self, text):
         # Strict formatting is done here
         if '.' in text:
-            file_data = ""  # todo waiting on completion of file_reader to read file text
+            extension = text.split('.')[-1]
+            assert extension in text_file_extensions
+            file_data = fr.read_file("templates/" + text)
             return file_data
 
         default = "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"

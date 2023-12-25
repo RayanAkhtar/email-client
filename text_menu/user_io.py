@@ -52,9 +52,9 @@ def get_all_files_in_directory(path, extensions):
 
 def list_files(option):
     if option == "templates":
-        files = get_all_files_in_directory("../templates/", template_extensions)
+        files = get_all_files_in_directory("templates/", template_extensions)
     else:
-        files = get_all_files_in_directory("../spreadsheets/", spreadsheet_extensions)
+        files = get_all_files_in_directory("spreadsheets/", spreadsheet_extensions)
 
     for i in range(0, len(files)):
         print(f"File {i+1} - {files[i]}")

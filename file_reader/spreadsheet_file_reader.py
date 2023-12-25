@@ -39,7 +39,8 @@ def read_xlsx_file(file):
     spreadsheet_file = SpreadsheetFile()
     df = pd.read_excel(file)
     records = df.values
-    headers = df.keys().values
+    spreadsheet_file.headers = df.keys().values
+    headers = spreadsheet_file.headers
     diff_format = all_nans(headers)
     if diff_format:
         records = remove_fake_nans(records)
