@@ -1,5 +1,5 @@
-import spreadsheet_file_reader as sfr
-import text_file_reader as tfr
+import file_reader.text_file_reader as tfr
+import file_reader.spreadsheet_file_reader as sfr
 
 
 def read_file(file):

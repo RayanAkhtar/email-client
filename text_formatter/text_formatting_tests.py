@@ -65,14 +65,45 @@ class MyTestCase(unittest.TestCase):
         result = "The next word should be ERROR: ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
         self.assertEqual(result, formatter.output_text)
 
-    def test_file(self):
-        return  # todo waiting on file reading
+    def test_file_txt(self):
+        dummy_text = "We should be printing 'Hello World': [hw.txt]"
+        dictionary = {}
+        formatter = TextFormatter(dummy_text, dictionary)
+        formatter.format_text()
+        result = "We should be printing 'Hello World': Hello World"
+        self.assertEqual(result, formatter.output_text)
 
-    def test_multiple_files(self):
-        return  # todo waiting on file reading
+    def test_file_pdf(self):
+        dummy_text = "[third_line.pdf]"
+        dictionary = {}
+        formatter = TextFormatter(dummy_text, dictionary)
+        formatter.format_text()
+        result = "This should be the third line  "
+        self.assertEqual(result, formatter.output_text)
 
-    def test_different_types_files(self):
-        return  # todo waiting on file reading
+    def test_file_docx(self):
+        dummy_text = "[second_line.docx]"
+        dictionary = {}
+        formatter = TextFormatter(dummy_text, dictionary)
+        formatter.format_text()
+        result = "This should be the second line  \n"
+        self.assertEqual(result, formatter.output_text)
+
+    def test_multiple_same_files(self):
+        dummy_text = "[hw.txt]\n[hw.txt]\n[hw.txt]"
+        dictionary = {}
+        formatter = TextFormatter(dummy_text, dictionary)
+        formatter.format_text()
+        result = "Hello World\nHello World\nHello World"
+        self.assertEqual(result, formatter.output_text)
+
+    def test_multiple_different_files(self):
+        dummy_text = "[hw.txt]\n[second_line.docx]\n[third_line.pdf]"
+        dictionary = {}
+        formatter = TextFormatter(dummy_text, dictionary)
+        formatter.format_text()
+        result = "Hello World\nThis should be the second line  \n\nThis should be the third line  "
+        self.assertEqual(result, formatter.output_text)
 
     ########################            TESTING OPTIONAL TEXT FORMATTING            ########################
 
