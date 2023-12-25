@@ -6,7 +6,7 @@ import file_writer.file_writing as fw
 
 def menu():
 
-    print("Would you like to use a single template only")
+    print("\nWould you like to use a single template only")
     choice = io.get_yes_or_no()
 
     spreadsheet = fr.read_file(get_spreadsheet_choice())
@@ -14,17 +14,15 @@ def menu():
     if choice:  # Single file
         template = fr.read_file(get_template_choice())
     else:  # Multi file
-        template_column = get_column_name(spreadsheet, "Please enter the name of the template file header")
+        template_column = get_column_name(spreadsheet, "\nPlease enter the name of the template file header")
 
-    name_column = get_column_name(spreadsheet, "Enter the column name for the file name: ")
-    extension = io.get_extension("Please enter the file extension: ")
+    name_column = get_column_name(spreadsheet, "\nEnter the column name for the file name: ")
+    extension = io.get_extension("\nPlease enter the file extension: ")
 
     if choice:
         create_templates(template, spreadsheet, name_column, extension)
     else:
         create_multiple_templates(template_column, spreadsheet, name_column, extension)
-
-
 
 
 def get_template_choice():
@@ -43,6 +41,7 @@ def get_column_name(spreadsheet, message):
     print(message)
     for i in range(len(spreadsheet.headers)):
         print(f"Header {i + 1}: {spreadsheet.headers[i]}")
+    print("")
     column_name = io.get_option_from_list(spreadsheet.headers)
     return column_name
 

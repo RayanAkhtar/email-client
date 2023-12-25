@@ -3,7 +3,7 @@ from docx2pdf import convert
 from docx import Document
 
 
-def save_formatted_file(text_to_write, filename, extension, output_path="../output"):
+def save_formatted_file(text_to_write, filename, extension, output_path="output"):
     # Writes text to a txt/pdf/docx file
     if extension == 'txt':
         write_to_txt(text_to_write, filename, output_path)

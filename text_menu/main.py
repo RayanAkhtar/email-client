@@ -9,7 +9,8 @@ def menu():
     1. Create templates
     2. Send emails                      # Not implemented
     3. Help                             # Not implemented
-    4. Quit""")
+    4. Quit
+    """)
 
     choice = io.get_user_input(1, 4)
     if choice == 1:
@@ -21,8 +22,4 @@ def menu():
     else:
         print("Exiting Program")
         exit(0)
-
-
-if __name__ == "__main__":
-    menu()
 
