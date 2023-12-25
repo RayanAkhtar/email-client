@@ -50,18 +50,36 @@ def create_templates(template, spreadsheet, name_column, extension):
     for row in spreadsheet.records:
         formatter = tf.TextFormatter(template, row)
         formatter.format_text()
-        fw.save_formatted_file(formatter.output_text, row[name_column], extension, "output/") # todo: needs implementing
+        fw.save_formatted_file(formatter.output_text, row[name_column], extension, "output/")
 
 
 def create_multiple_templates(template_column, spreadsheet, name_column, extension):
-
+    all_templates = io.get_all_files_in_directory("templates/", ["txt", "pdf", "docx"])
     loaded_templates = {}
+    failed_templates = []
+
     for row in spreadsheet.records:
+        if row[template_column] not in all_templates:
+            print(f"ERROR IN {row[name_column]}: {row[template_column]} not found in templates folder")
+            failed_templates.append(row[name_column])
+            continue
+
         if row[template_column] not in loaded_templates.keys():
             loaded_templates[template_column] = fr.read_file(row[template_column])
 
         formatter = tf.TextFormatter(loaded_templates[template_column], row)
         formatter.format_text()
         fw.save_formatted_file(formatter.output_text, row[name_column], extension)
+
+    print("\nFinished template creation")
+    if len(failed_templates) > 0:
+        print("Failed templates:")
+        for template in failed_templates:
+            print("\t" + template)
+        print("The rest of the files have been successfully created\n")
+    else:
+        print("All templates were successfully created\n")
+
+
 
 
