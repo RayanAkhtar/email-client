@@ -1,11 +1,12 @@
 import text_menu.help as help
 import text_menu.emails as emails
 import text_menu.templates as templates
-import text_menu.io as io
+import text_menu.user_io as io
+
 
 def menu():
     print("""Welcome to the AI Email Client:
-    1. Create a templates               # Not implemented
+    1. Create templates
     2. Send emails                      # Not implemented
     3. Help                             # Not implemented
     4. Quit""")
@@ -22,4 +23,6 @@ def menu():
         exit(0)
 
 
+if __name__ == "__main__":
+    menu()
 

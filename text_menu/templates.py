@@ -1,4 +1,4 @@
-import text_menu.io as io
+import text_menu.user_io as io
 import file_reader.file_reader as fr
 import text_formatter.text_formatting as tf
 import file_writer.file_writing as fw
@@ -21,8 +21,10 @@ def menu():
 
     if choice:
         create_templates(template, spreadsheet, name_column, extension)
-    else :
+    else:
         create_multiple_templates(template_column, spreadsheet, name_column, extension)
+
+
 
 
 def get_template_choice():
@@ -39,6 +41,8 @@ def get_spreadsheet_choice():
 
 def get_column_name(spreadsheet, message):
     print(message)
+    for i in range(len(spreadsheet.headers)):
+        print(f"Header {i + 1}: {spreadsheet.headers[i]}")
     column_name = io.get_option_from_list(spreadsheet.headers)
     return column_name
 
@@ -47,7 +51,7 @@ def create_templates(template, spreadsheet, name_column, extension):
     for row in spreadsheet.records:
         formatter = tf.TextFormatter(template, row)
         formatter.format_text()
-        fw.save_formatted_file(formatter.output_text, row[name_column], extension) # todo: needs implementing
+        fw.save_formatted_file(formatter.output_text, row[name_column], extension, "output/") # todo: needs implementing
 
 
 def create_multiple_templates(template_column, spreadsheet, name_column, extension):
