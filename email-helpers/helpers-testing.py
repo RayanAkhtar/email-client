@@ -49,6 +49,5 @@ class MyTestCase(unittest.TestCase):
         server.logout()
 
 
-
 if __name__ == '__main__':
     unittest.main()
