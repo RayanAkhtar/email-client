@@ -51,7 +51,7 @@ class TextFormatter:
         if '.' in text:
             extension = text.split('.')[-1]
             assert extension in text_file_extensions
-            file_data = fr.read_file("templates/" + text)
+            file_data = fr.read_file(text)
             return file_data
 
         default = "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
