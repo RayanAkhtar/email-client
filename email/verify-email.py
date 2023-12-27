@@ -1,1 +1,0 @@
-# This file will prompt the user to verify an email before sending it

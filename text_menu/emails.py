@@ -1,6 +1,6 @@
-import user_io as io
-import email.auto_email as auto
-import email.verify_email as verify
+import text_menu.user_io as io
+import email_helpers.auto_email as auto
+import email_helpers.verify_email as verify
 import text_menu.templates as templates
 
 

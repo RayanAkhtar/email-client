@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
         server.logout()
 
     def test_send_email_once(self):
-        # Sends a single email
+        # Sends a single email_helpers
         server = h.Email(username, password)
 
         message = "Hello World!"
@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         server.logout()
 
     def test_send_email_different_accounts(self):
-        # Sends the same email to different accounts
+        # Sends the same email_helpers to different accounts
         oth_acc_1 = ["rayan.akhtar.computing@gmail.com"]
         oth_acc_2 = ["rayan.akhtar.testing@gmail.com"]
         message = "Hello World"

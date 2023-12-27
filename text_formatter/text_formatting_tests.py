@@ -410,14 +410,14 @@ class MyTestCase(unittest.TestCase):
         ~This should contain none of my data
         ?"""
 
-        dictionary = {"planet": "World", "paragraph to choose": "p1", "name":"Rayan", "project":"email client"}
+        dictionary = {"planet": "World", "paragraph to choose": "p1", "name":"Rayan", "project":"email_helpers client"}
 
         formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
 
         result = """Hello World
         This should output my name: Rayan
-        This should then output my project: email client"""
+        This should then output my project: email_helpers client"""
 
         self.assertEqual(result, formatter.output_text)
 
