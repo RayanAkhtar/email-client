@@ -2,12 +2,6 @@ import unittest
 
 import helpers as h
 
-# TODO
-#       Tell the user to go to gmail
-#           Set up 2fa
-#           Set up a passkey
-#           Use that passkey when they want to login
-#           Let them know that this may not be too secure, so don't use this for their main email
 
 receiver_email = ["rayanakhtar200330@gmail.com", "ra1422@ic.ac.uk"]
 username = "rayanakhtar12032003@gmail.com"
