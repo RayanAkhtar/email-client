@@ -1,25 +1,20 @@
 import smtplib
-from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import ssl
 
 port = 465
 
-# todo remove before committing:
-#       email: rayanakhtar2003.testing@gmail.com
-#       https://www.google.com/settings/security/lesssecureapps
-#       app password: jpgy cdaw owvc lpyj
-
 
 class Email:
     def __init__(self, sender_email=None, password=None):
-        self.msg = None
-        self.sender_email = sender_email
-        self.password = password
-        self.server = None
-        self.login()
+        self.msg = None                         # The message to send to the recipient
+        self.sender_email = sender_email        # The sender's email
+        self.password = password                # The sender's password
+        self.server = None                      # The server to send the email on
+        self.login()                            # Sets up most of the user's data
 
     def login(self):
+        # Sets up user data and logs in
         if self.sender_email is None:
             self.sender_email = input("Please enter your email address and press enter: ")
 
@@ -35,6 +30,7 @@ class Email:
         self.server.close()
 
     def send_email(self, recipients, message, subject=""):
+        # Send an email to the recipient with a given message
         self.msg = MIMEText(message)
         self.msg["Subject"] = subject
         self.msg["From"] = self.sender_email

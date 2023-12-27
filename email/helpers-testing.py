@@ -3,17 +3,19 @@ import unittest
 import helpers as h
 
 
-receiver_email = ["rayanakhtar200330@gmail.com", "ra1422@ic.ac.uk"]
+receiver_email = ["arjenahmed123@gmail.com"]
 username = "rayanakhtar12032003@gmail.com"
 password = "jpgy cdaw owvc lpyj"
 
 
 class MyTestCase(unittest.TestCase):
     def test_opens_server_correctly(self):
+        # Checks that we are able to setup the server properly
         server = h.Email(username, password)
         server.logout()
 
     def test_send_email_once(self):
+        # Sends a single email
         server = h.Email(username, password)
 
         message = "Hello World!"
@@ -22,6 +24,7 @@ class MyTestCase(unittest.TestCase):
         server.logout()
 
     def test_send_email_three_times(self):
+        # Sends 3 emails with different messages
         server = h.Email(username, password)
 
         for i in range(1, 4):
@@ -30,6 +33,7 @@ class MyTestCase(unittest.TestCase):
         server.logout()
 
     def test_send_email_different_accounts(self):
+        # Sends the same email to different accounts
         oth_acc_1 = ["rayan.akhtar.computing@gmail.com"]
         oth_acc_2 = ["rayan.akhtar.testing@gmail.com"]
         message = "Hello World"
