@@ -16,7 +16,7 @@ class Email:
     def login(self):
         # Sets up user data and logs in
         if self.sender_email is None:
-            self.sender_email = input("Please enter your email_helpers address and press enter: ")
+            self.sender_email = input("Please enter your email address and press enter: ")
 
         if self.password is None:
             self.password = input("Please type in your password and press enter: ")

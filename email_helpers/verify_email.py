@@ -3,25 +3,54 @@ import file_reader.file_reader as fr
 import os
 import text_menu.user_io as io
 
+extensions = [".txt", ".pdf", ".docx"]
+
 
 def mail(spreadsheet, column_name): # For now it is duplicated, but will have different behaviour later
 
-    email = Email()
-    for record in spreadsheet.records():
-        subject = record["subject"]
-        receivers_email = record["email_helpers"]
-        template = record[column_name]
+    user_email = Email()
+    for record in spreadsheet.records:
+        if "subject" in record.keys():
+            subject = record["subject"]
+        else:
+            print("No subject header was identified for this email")
+            subject = input("Enter a subject, or leave blank to ignore: ")
+
+        if "email" in record.keys():
+            receivers_email = record["email"]
+        else:
+            print(f"No email associated with template file {record[column_name]}")
+            print("This file will not be sent\n")
+            continue
+
+        found_message = False
+        for extension in extensions:
+            template = record[column_name] + extension
+            message = fr.read_file(template)
+            if (message != None):
+                found_message = True
+                break
+
+        if not found_message:
+            print(f"No file found under file name {record[column_name]}")
+            print("File will not be sent\n")
+            continue
+
         message = fr.read_file(template)
-        files = []  # todo later, incorporate into email_helpers sending
 
-        # todo later: add a way or the user to edit emails and then submit that
-        #   The part below is a simple template that to either send or skip an email_helpers
-        #   The plan is to allow the user to then edit the email_helpers in some console or text editor
+        io.display_message(message)
 
-        print("Would you like to send this email_helpers: ")
+        print("Would you like to send this message?")
         response = io.get_yes_or_no()
-        if response == 'y':
-            email.send_email([receivers_email], message, subject)
-        os.remove("template/" + template)
 
-    email.logout()
+        if response == 'n':
+            os.remove("output/" + template)
+            continue
+
+        files = [] # todo later, incorporate into email_helpers sending
+
+        user_email.send_email([receivers_email], message, subject)
+        os.remove("output/" + template)
+        print(f"File {template} sent successfully to {receivers_email}\n")
+
+    user_email.logout()

@@ -15,11 +15,12 @@ def get_user_input(lower_bound, upper_bound):
 
 def get_yes_or_no():
     while True:
-        choice = input("Please enter [Y]es or [N]o")
-        if choice.lower() == 'y':
-            return True
-        elif choice.lower() == 'n':
-            return False
+        choice = input("Please enter [Y]es or [N]o").lower().strip()
+        if choice.startswith('y'):
+            return 'y'
+        elif choice.startswith('n'):
+            return 'n'
+        print("Please enter an appropriate value")
 
 
 def get_option_from_list(data):
@@ -62,3 +63,6 @@ def list_files(option):
     return files
 
 
+def display_message(message):
+    print("This is what the email body will look like: ")
+    print(message)  # Todo later in gui, make it possible for the user to edit these messages instead

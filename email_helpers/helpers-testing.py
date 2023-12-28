@@ -3,7 +3,7 @@ import unittest
 import helpers as h
 
 
-receiver_email = ["arjenahmed123@gmail.com"]
+receiver_email = ["rayanakhtar120330@gmail.com"]
 username = "rayanakhtar12032003@gmail.com"
 password = "jpgy cdaw owvc lpyj"
 

@@ -2,30 +2,44 @@ from email_helpers.helpers import Email
 import file_reader.file_reader as fr
 import os
 
+extensions = [".txt", ".pdf", ".docx"]
 
 def mail(spreadsheet, column_name):
 
     user_email = Email()
-    for record in spreadsheet.records():
+    for record in spreadsheet.records:
         if "subject" in record.keys():
             subject = record["subject"]
         else:
-            print("No subject header was identified for this email_helpers")
+            print("No subject header was identified for this email")
             subject = input("Enter a subject, or leave blank to ignore: ")
 
-        if "email_helpers" in record.keys():
-            receivers_email = record["email_helpers"]
+        if "email" in record.keys():
+            receivers_email = record["email"]
         else:
-            print(f"No email_helpers associated with template file {record[column_name]}")
+            print(f"No email associated with template file {record[column_name]}")
             print("This file will not be sent\n")
             continue
-        template = record[column_name]
+
+        found_message = False
+        for extension in extensions:
+            template = record[column_name] + extension
+            message = fr.read_file(template)
+            if (message != None):
+                found_message = True
+                break
+
+        if not found_message:
+            print(f"No file found under file name {record[column_name]}")
+            print("File will not be sent\n")
+            continue
+
         message = fr.read_file(template)
 
         files = [] # todo later, incorporate into email_helpers sending
 
         user_email.send_email([receivers_email], message, subject)
-        os.remove("template/" + template)
+        os.remove("output/" + template)
         print(f"File {template} sent successfully to {receivers_email}\n")
 
     user_email.logout()
