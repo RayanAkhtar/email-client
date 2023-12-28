@@ -7,7 +7,7 @@ import text_menu.user_io as io
 def menu():
     print("""Welcome to the AI Email Client:
     1. Create templates
-    2. Send emails                      # Not implemented
+    2. Send emails
     3. Help                             # Not implemented
     4. Quit
     """)

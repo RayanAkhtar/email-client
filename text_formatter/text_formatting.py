@@ -51,7 +51,9 @@ class TextFormatter:
         if '.' in text:
             extension = text.split('.')[-1]
             assert extension in text_file_extensions
-            file_data = fr.read_file("templates/" + text)
+            file_data = fr.read_file(text)
+            if file_data is None:
+                return "Error: NO FILE DATA"
             return file_data
 
         default = "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
@@ -65,6 +67,8 @@ class TextFormatter:
         if key not in self.dictionary.keys():
             return default
         result = self.dictionary[key]
+        if result == None:
+            return f"ERROR: No value found in spreadsheet for {key}"
         return result
 
     def curly_format(self, text):

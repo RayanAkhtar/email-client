@@ -2,19 +2,31 @@
 A python-based project to support automation of emails with text reformatting including the use of AI-Generated prompts
 
 
+# Prerequisites
+In order to use the email client, you will need to have a gmail account.
+Then, click on your profile and go to 'Manage your google account', from here, go to 'security', turn on 'two step verification' and head into that section,
+After this, go to 'App passwords' and type in any name for this. Keep track of the password as you will need to use this when logging in.
+When it comes to typing in your password, you will use this instead of your gmail password.
+<br>
+It is important to note that it is essential to keep this password safe and secure as other people will be able to access your account using this password too.
+<br><br>
+Before running the program, you should create a spreadsheet file and a template file, putting them in the `spreadsheets` and `templates` folders respectively.
+More detail on the format of templates and spreadsheets will be provided below.
+
 # How to use
 
 ## Running the program
-When you run the program, you will be given the option to pass a spreadsheet file, but you must provide a template. If you do pass a csv file, the program will create ```rows``` files in your selected output folder, where ```rows``` is the number of rows in your provided spreadsheet file.
-
-## Setting up user data
-In order to reformat text, you will need to provide a template file. If you wish to send emails on top of this, you will need to also include a spreadsheet file. You will also need to reformat part of the code and change some data to use your provided email in the email client. More details of this will be provided upon implementation of the emailing system.
-There is also a plan to contain emails sent so that the user doesn't send the same email twice to any recipient.
+When running the program, you will be given options to format templates or to send emails.
+<br>
+If you choose to format templates, you will need to provide a spreadsheet.
+You are also given an option to use a single template or multiple templates.
+In the single template option, you must provide the template file in the program.
+On the other hand, if you choose not to use a single template, you must provide the full file name of the template as a field in the spreadsheet file.
 
 
 ## Formatting the template
 In order to make use of the program, you will want a template. Ideally, this should be a plain .txt file, however, it can also accept .pdf and .docx files too.
-<br>
+It is heavily recommended to avoid creating pdf files as this is a lengthy process, as opposed to the creation of docx and txt files.
 There are different types of ways you can reformat a template:
 
 ### 1. Strict Text Replacement '[s]'
@@ -23,6 +35,7 @@ With Strict Text Replacement, you are able to replace text with data held in the
 In order to have a default value in your text replacement, you can use the ```:``` sign to indicate a default value. For example, if you were to have ```[Name:Tom]``` in your file, then the program will check the record in the spreadsheet file for column ```Name```, and if there is no value, it will be replaced with ```Tom```.
 <br>
 In order to get all data held within another `.pdf`, `.txt` or `.docx` file, you will need to include the file name as well as its extension. For example: `[cv.pdf]`.
+The main reasoning behind this functionality is to make templates look cleaner, as well as providing the generative ai model some more data to aid text generation.
 
 ### 2. Optional and Default Paragraph Replacement
 Suppose you are formatting cover letters, you may wish to tailor your application to a specific field such as AI, Machine Learning, or Software Engineering, but reformatting paragraphs each time can be monotonous, thats where optional and default paragraph replacement comes in to play.
@@ -43,7 +56,9 @@ Firstly, you can chain commands together, this can be done using the `;` operato
 <br>
 Another thing that you can do is provide more template files to pass to the AI text replacement tool, you are even able to pass the current state of text replacement to get it to finish sentences for you.
 <br>
-To pass a file, you will need to enclose the file name in the ai prompt using `[]`. For example, you can do {prompt_1 [file_name_here]; prompt_2; prompt_3} to pass a file for reference alongside a prompt and then chain it to another prompt. In order to pass the current state of the text replacement, you can use `[self]` to pass itself for a reference.
+To pass a file, you will need to enclose the file name in the ai prompt using `[]`. 
+For example, you can do `{prompt_1 [file_name_here]; prompt_2; prompt_3}`to pass a file for reference alongside a prompt and then chain it to another prompt. 
+In order to pass the current state of the text replacement, you can use `[self]` to pass itself for a reference.
 <br>
 Here is an example command `{Tell me about company x; use the following text to show why I am a good fit for the company [cv.pdf]; now use this data to finish off the following paragraph, only write a few sentances: [self]}`.
 
@@ -52,7 +67,7 @@ Here is an example command `{Tell me about company x; use the following text to 
 It is optional to provide a spreadsheet file to the program, it must be in either `.csv` or `.xls` format in order to be processed correctly. Along with this, if you wish to use strict and optional text replacements, the column name must match the keyword held within `[]` and `#`. The column names will be converted to lowercase before use in both the template and the spreadsheet file, please keep this in mind. Also, it is best to use `_` or `-` to space words as opposed to a normal space character.
 In the spreadsheet file, there are a few keywords that should be provided if you wish to send emails to users, they can also be used in the text replacement program if you wish:
 <br>
-1. `email` - This field **must** be filled in to send an email to the company of your choosing.
+1. `email_address` - This field **must** be filled in to send an email to the company of your choosing.
 2. `subject` - This field can be included to provide a subject to the email. By default, AI will be used, in order to keep it blank, create a `subject` row and leave blank with an empty default value.
 3. `file_n` - You can send multiple files using the email client at the end of an email, to do this, you will need columns such as `file_1`, `file_2`, and so on.
 

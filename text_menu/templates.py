@@ -11,7 +11,7 @@ def menu():
 
     spreadsheet = fr.read_file(get_spreadsheet_choice())
 
-    if choice:  # Single file
+    if choice == 'y':  # Single file
         template = fr.read_file(get_template_choice())
     else:  # Multi file
         template_column = get_column_name(spreadsheet, "\nPlease enter the name of the template file header")
@@ -19,7 +19,7 @@ def menu():
     name_column = get_column_name(spreadsheet, "\nEnter the column name for the file name: ")
     extension = io.get_extension("\nPlease enter the file extension: ")
 
-    if choice:
+    if choice == 'y':
         create_templates(template, spreadsheet, name_column, extension)
     else:
         create_multiple_templates(template_column, spreadsheet, name_column, extension)
