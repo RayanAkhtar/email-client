@@ -54,9 +54,15 @@ def mail(spreadsheet, column_name):
 
         message = fr.read_file(template)
 
-        files = [] # todo later, incorporate into email_helpers sending
+        files = []
+        file = "file_"
+        i = 1
+        while (file + str(i)) in record:
+            if record[file + str(i)] is not None:
+                files.append(record[file + str(i)])
+            i += 1
 
-        user_email.send_email([receivers_email], message, subject)
+        user_email.send_email([receivers_email], message, subject, files)
         os.remove("output/" + template)
         print(f"File {template} sent successfully to {receivers_email}\n")
 
