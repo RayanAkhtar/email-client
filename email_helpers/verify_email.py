@@ -52,7 +52,14 @@ def mail(spreadsheet, column_name): # For now it is duplicated, but will have di
             os.remove("output/" + template)
             continue
 
-        files = [] # todo later, incorporate into email_helpers sending
+        files = []
+        file = "file_"
+        i = 1
+        while spreadsheet.records[file + str(i)] is not None:
+            files.append(spreadsheet.records[file + str(i)])
+            i += 1
+
+        user_email.attach_files(files)
 
         user_email.send_email([receivers_email], message, subject)
         os.remove("output/" + template)
