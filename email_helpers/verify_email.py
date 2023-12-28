@@ -23,11 +23,16 @@ def mail(spreadsheet, column_name): # For now it is duplicated, but will have di
             print("This file will not be sent\n")
             continue
 
+        if receivers_email is None:
+            print(f"No email associated with template file {record[column_name]}")
+            print("This file will not be sent\n")
+            continue
+
         found_message = False
         for extension in extensions:
             template = record[column_name] + extension
             message = fr.read_file(template)
-            if (message != None):
+            if message is not None:
                 found_message = True
                 break
 
