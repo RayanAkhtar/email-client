@@ -1,8 +1,12 @@
+import file_reader.file_reader as fr
+
+text_file_extensions = ["txt", "pdf", "docx"]
+
+
 class TextFormatter:
 
-    def __init__(self, input_text, files, dictionary):
+    def __init__(self, input_text, dictionary):
         self.input_text = input_text                # The text to reformat
-        self.files = files                          # Any files that will be relevant in square formatting
         self.output_text = ""                       # The output text to return once the text is formatted correctly
         self.pos = 0                                # A position to keep track of the current formatting state
         self.dictionary = dictionary                # A record from a csv file, should be passed in as a mapping
@@ -45,7 +49,11 @@ class TextFormatter:
     def square_format(self, text):
         # Strict formatting is done here
         if '.' in text:
-            file_data = ""  # todo waiting on completion of file_reader to read file text
+            extension = text.split('.')[-1]
+            assert extension in text_file_extensions
+            file_data = fr.read_file(text)
+            if file_data is None:
+                return "Error: NO FILE DATA"
             return file_data
 
         default = "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
@@ -59,6 +67,8 @@ class TextFormatter:
         if key not in self.dictionary.keys():
             return default
         result = self.dictionary[key]
+        if result == None:
+            return f"ERROR: No value found in spreadsheet for {key}"
         return result
 
     def curly_format(self, text):
@@ -87,7 +97,7 @@ class TextFormatter:
     def recurse(self, text):
         # To recurse over formatted text, e.g: squares nested within an optional
         # Note that nesting one optional block inside another is not implemented
-        formatter = TextFormatter(text, self.files, self.dictionary)
+        formatter = TextFormatter(text, self.dictionary)
         formatter.format_text()
         return formatter.output_text
 
