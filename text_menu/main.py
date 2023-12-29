@@ -8,7 +8,7 @@ def menu():
     print("""Welcome to the AI Email Client:
     1. Create templates
     2. Send emails
-    3. Help                             # Not implemented
+    3. Help
     4. Quit
     """)
 
