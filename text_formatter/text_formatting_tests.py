@@ -7,6 +7,12 @@ class MyTestCase(unittest.TestCase):
 
     ########################            TESTING STRICT TEXT FORMATTING            ########################
 
+    def test_incorrect_square(self):
+        dummy_text = "Hello [Greeting"
+        formatter = TextFormatter(dummy_text, {"Greeting":"World"})
+        formatter.format_text()
+        self.assertEqual("Hello [Greeting", formatter.output_text)
+
     def test_simple_square(self):
         # A single check to see that strict replacement is working correctly
         dummy_text = "Hello [Greeting]"
@@ -106,6 +112,12 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(result, formatter.output_text)
 
     ########################            TESTING OPTIONAL TEXT FORMATTING            ########################
+
+    def test_incorrect_curly(self):
+        dummy_text = "Hello {Greeting"
+        formatter = TextFormatter(dummy_text, {"Greeting":"World"})
+        formatter.format_text()
+        self.assertEqual("Hello {Greeting", formatter.output_text)
 
     def test_no_options(self):
         # A check to skip any option sets that do not have options and defaults
@@ -376,6 +388,16 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual("ERROR: MULTIPLE DEFAULTS", formatter.output_text)
 
     ########################            TESTING NON-AI MIXED TEXT FORMATTING            ########################
+
+    def test_incorrect_question(self):
+        dummy_text = """\
+        ?
+        #paragraph 1
+        text 1
+        ~ default paragraph here"""
+        formatter = TextFormatter(dummy_text, {"Greeting":"World"})
+        formatter.format_text()
+        self.assertEqual(dummy_text, formatter.output_text)
 
     def test_multiple_options_with_squares(self):
         # Tests to see that both strict and optional replacement work correctly together

@@ -19,12 +19,21 @@ class TextFormatter:
             self.pos += 1
             if char in self.delimiters:
                 if char == '[':  # Strict formatting
+                    if ']' not in self.input_text[self.pos:]:
+                        self.output_text += self.input_text[self.pos-1:]
+                        return
                     text = self.get_until("]")
                     self.output_text += (self.square_format(text))
                 elif char == '{':  # AI-Generated formatting
+                    if '}' not in self.input_text[self.pos:]:
+                        self.output_text += self.input_text[self.pos-1:]
+                        return
                     text = self.get_until("}")
                     self.output_text += (self.curly_format(text))
                 elif char == '?':  # Optional formatting
+                    if '?' not in self.input_text[self.pos:]:
+                        self.output_text += self.input_text[self.pos-1:]
+                        return
                     text = self.get_until("?")
                     self.output_text += (self.optional_format(text))
                 else:
@@ -41,7 +50,7 @@ class TextFormatter:
             text += self.input_text[self.pos]
             self.pos += 1
             if self.pos >= len(self.input_text):
-                print(f"No delimiter found: {delims}")
+                print(f"Text might not be formatted correctly, missing delimiter: {delims}")
                 exit(-1)
         self.pos += 1
         return text
