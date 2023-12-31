@@ -10,7 +10,7 @@ class TextFormatter:
         self.output_text = ""                       # The output text to return once the text is formatted correctly
         self.pos = 0                                # A position to keep track of the current formatting state
         self.dictionary = dictionary                # A record from a csv file, should be passed in as a mapping
-        self.delimiters = "{}[]?"                   # Delimiters to trigger a string format
+        self.delimiters = "{[?"                     # Delimiters to trigger a string format
 
     def format_text(self):
         # Runs over the input text and formats where necessary
@@ -18,18 +18,28 @@ class TextFormatter:
             char = self.input_text[self.pos]
             self.pos += 1
             if char in self.delimiters:
+
                 if char == '[':  # Strict formatting
+                    if ']' not in self.input_text[self.pos:]:
+                        self.output_text += self.input_text[self.pos-1:]
+                        return
                     text = self.get_until("]")
                     self.output_text += (self.square_format(text))
+
                 elif char == '{':  # AI-Generated formatting
+                    if '}' not in self.input_text[self.pos:]:
+                        self.output_text += self.input_text[self.pos-1:]
+                        return
                     text = self.get_until("}")
                     self.output_text += (self.curly_format(text))
-                elif char == '?':  # Optional formatting
+
+                else:  # Optional formatting
+                    if '?' not in self.input_text[self.pos:]:
+                        self.output_text += self.input_text[self.pos-1:]
+                        return
                     text = self.get_until("?")
                     self.output_text += (self.optional_format(text))
-                else:
-                    print("Invalid character in delimiter set")
-                    exit(-1)
+
             else:
                 self.output_text += char
 
@@ -40,9 +50,6 @@ class TextFormatter:
         while self.input_text[self.pos] not in delims:
             text += self.input_text[self.pos]
             self.pos += 1
-            if self.pos >= len(self.input_text):
-                print(f"No delimiter found: {delims}")
-                exit(-1)
         self.pos += 1
         return text
 
@@ -67,7 +74,7 @@ class TextFormatter:
         if key not in self.dictionary.keys():
             return default
         result = self.dictionary[key]
-        if result == None:
+        if result is None:
             return f"ERROR: No value found in spreadsheet for {key}"
         return result
 
