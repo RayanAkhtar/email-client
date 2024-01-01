@@ -12,34 +12,31 @@ class TextFormatter:
         self.dictionary = dictionary                # A record from a csv file, should be passed in as a mapping
         self.delimiters = "{[?"                     # Delimiters to trigger a string format
 
+    def format_text_helper(self, end_char, func):
+        if end_char not in self.input_text[self.pos:]:
+            self.output_text += self.input_text[self.pos - 1:]
+            self.pos = len(self.output_text)
+            return
+
+        text = self.get_until(end_char)
+        self.output_text += func(text)
+
     def format_text(self):
+
+        format_text_funcs = {
+            '[': [self.square_format, ']'],
+            '{': [self.curly_format, '}'],
+            '?': [self.optional_format, '?']
+        }
+
         # Runs over the input text and formats where necessary
         while self.pos < len(self.input_text):
             char = self.input_text[self.pos]
             self.pos += 1
             if char in self.delimiters:
-
-                if char == '[':  # Strict formatting
-                    if ']' not in self.input_text[self.pos:]:
-                        self.output_text += self.input_text[self.pos-1:]
-                        return
-                    text = self.get_until("]")
-                    self.output_text += (self.square_format(text))
-
-                elif char == '{':  # AI-Generated formatting
-                    if '}' not in self.input_text[self.pos:]:
-                        self.output_text += self.input_text[self.pos-1:]
-                        return
-                    text = self.get_until("}")
-                    self.output_text += (self.curly_format(text))
-
-                else:  # Optional formatting
-                    if '?' not in self.input_text[self.pos:]:
-                        self.output_text += self.input_text[self.pos-1:]
-                        return
-                    text = self.get_until("?")
-                    self.output_text += (self.optional_format(text))
-
+                format_func = format_text_funcs[char][0]
+                char_end = format_text_funcs[char][1]
+                self.format_text_helper(char_end, format_func)
             else:
                 self.output_text += char
 
@@ -63,7 +60,7 @@ class TextFormatter:
                 return "Error: NO FILE DATA"
             return file_data
 
-        default = "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
+        default = "ERROR: NO DEFAULT VALUE FOUND"
         key = text
 
         if ":" in text:
@@ -75,7 +72,7 @@ class TextFormatter:
             return default
         result = self.dictionary[key]
         if result is None:
-            return f"ERROR: No value found in spreadsheet for {key}"
+            return f"ERROR: NO VALUE IN SPREADSHEET FOR {key}"
         return result
 
     def curly_format(self, text):
@@ -98,7 +95,7 @@ class TextFormatter:
             return self.recurse(formatted.options[option])
 
         if formatted.default == "":
-            return "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
+            return "ERROR: NO DEFAULT VALUE FOUND"
         return self.recurse(formatted.default)
 
     def recurse(self, text):

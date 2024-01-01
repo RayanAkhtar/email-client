@@ -5,15 +5,13 @@ from docx import Document
 
 def save_formatted_file(text_to_write, filename, extension, output_path="output/"):
     # Writes text to a txt/pdf/docx file
-    if extension == 'txt':
-        write_to_txt(text_to_write, filename, output_path)
-    elif extension == 'pdf':
-        write_to_pdf(text_to_write, filename, output_path)
-    elif extension == 'docx':
-        write_to_docx(text_to_write, filename, output_path)
-    else:
-        print(f'Unsupported file: {extension}')
-        exit(-1)
+    write_dict = {
+        'txt': write_to_txt,
+        'pdf': write_to_pdf,
+        'docx': write_to_docx
+    }
+
+    write_dict[extension](text_to_write, filename, output_path)
 
 
 def write_to_txt(text_to_write, filename, output_path):

@@ -4,40 +4,60 @@ template_extensions = ['txt', 'pdf', 'docx']        # Supported template file ex
 spreadsheet_extensions = ['xlsx', 'csv']            # Supported spreadsheet extensions
 
 
-def get_user_input(lower_bound, upper_bound):
+def get_user_input(message, lower_bound, upper_bound):
+    print(message)
     while True:
         choice = input(f"Please enter a number between {lower_bound} and {upper_bound}: ")
         if choice.isnumeric() and lower_bound <= int(choice) <= upper_bound:
+            clear_screen()
             return int(choice)
-        else:
-            print("Please enter a valid integer within the correct range: ")
+
+        clear_screen()
+        print(message)
+        print(f"Incorrect input, please try again")
 
 
-def get_yes_or_no():
+def get_yes_or_no(message):
+    print(message)
     while True:
         choice = input("Please enter [Y]es or [N]o: ").lower().strip()
         if choice.startswith('y'):
+            clear_screen()
             return 'y'
         elif choice.startswith('n'):
+            clear_screen()
             return 'n'
-        print("Please enter an appropriate value: ")
+        clear_screen()
+        print(message)
+        print("Input not recognised, please try again")
 
 
-def get_option_from_list(data):
+def get_option_from_list(data, message):
+    print(message)
     while True:
         choice = input("Please enter either the file name or its corresponding number: ")
         if choice.isnumeric() and 1 <= int(choice) <= len(data):
+            clear_screen()
             return data[int(choice) - 1]
         else:
             if choice in data:
+                clear_screen()
                 return choice
+        clear_screen()
+        print(message)
+        print("Input not recognised, please try again")
 
 
 def get_extension(message):
+    message = "You can currently save the file as a 'txt', 'pdf' or 'docx' file"
+    print(message)
     while True:
-        extension = input(message)
+        extension = input("Enter a file type: ")
         if extension in template_extensions:
+            clear_screen()
             return extension
+        clear_screen()
+        print(message)
         print("Please enter a valid template extension (txt, pdf, docx)")
 
 
@@ -57,12 +77,23 @@ def list_files(option):
     else:
         files = get_all_files_in_directory("spreadsheets/", spreadsheet_extensions)
 
-    for i in range(0, len(files)):
-        print(f"File {i+1} - {files[i]}")
-
     return files
 
 
-def display_message(message):
-    print("This is what the email body will look like: ")
-    print(message)  # Todo later in gui, make it possible for the user to edit these messages instead
+def get_files_as_string(files):
+    message = ""
+    for i in range(0, len(files)):
+        message += f"File {i+1} - {files[i]}\n"
+    return message
+
+
+def get_message_to_display(message):
+    return "This is what the email body will look like:\n" + message + "\n"
+
+
+def clear_screen():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+    print()
