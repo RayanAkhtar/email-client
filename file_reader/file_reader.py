@@ -3,6 +3,13 @@ import file_reader.spreadsheet_file_reader as sfr
 import os
 
 possible_paths = ["templates/", "spreadsheets/", "output/"]
+func_dict = {
+    'txt': tfr.read_txt_file,
+    'pdf': tfr.read_pdf_file,
+    'docx': tfr.read_docx_file,
+    'csv': sfr.read_csv_file,
+    'xlsx': sfr.read_xlsx_file
+}
 
 
 def read_file(file):
@@ -17,15 +24,4 @@ def read_file(file):
         return None
 
     extension = file.split('.')[-1]
-    if extension == 'txt':
-        return tfr.read_txt_file(selected_path)
-    elif extension == 'pdf':
-        return tfr.read_pdf_file(selected_path)
-    elif extension == 'docx':
-        return tfr.read_docx_file(selected_path)
-    elif extension == 'csv':
-        return sfr.read_csv_file(selected_path)
-    elif extension == 'xlsx':
-        return sfr.read_xlsx_file(selected_path)
-    else:
-        print("Invalid file extension")
+    return func_dict[extension](selected_path)

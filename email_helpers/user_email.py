@@ -1,7 +1,6 @@
 import os
 import text_menu.user_io as io
-import helpers
-from helpers import Email
+import email_helpers.helpers
 
 
 extensions = [".txt", ".pdf", ".docx"]
@@ -14,7 +13,7 @@ def mail(spreadsheet, column_name, is_auto):
         print("Would you like to set email subjects if they are not already set in the spreadsheet?")
         prompt_for_subject = io.get_yes_or_no() == 'y'
 
-    user_email = Email()
+    user_email = helpers.Email()
     for record in spreadsheet.records:
 
         subject = helpers.get_subject(record, (not is_auto) or prompt_for_subject)
