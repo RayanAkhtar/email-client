@@ -68,7 +68,7 @@ class MyTestCase(unittest.TestCase):
         dictionary = {}
         formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
-        result = "The next word should be ERROR: ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
+        result = "The next word should be ERROR: ERROR: NO DEFAULT VALUE FOUND"
         self.assertEqual(result, formatter.output_text)
 
     def test_file_txt(self):
@@ -168,7 +168,7 @@ class MyTestCase(unittest.TestCase):
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
-        self.assertEqual("ERROR: NO OPTION MATCH AND NO DEFAULT VALUE", formatter.output_text)
+        self.assertEqual("ERROR: NO DEFAULT VALUE FOUND", formatter.output_text)
 
     def test_single_option_with_default(self):
         # A check to see that the default will be selected when no options can be selected
@@ -332,7 +332,7 @@ class MyTestCase(unittest.TestCase):
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
-        self.assertEqual("ERROR: NO OPTION MATCH AND NO DEFAULT VALUE", formatter.output_text)
+        self.assertEqual("ERROR: NO DEFAULT VALUE FOUND", formatter.output_text)
 
     def test_multiple_defaults_no_options(self):
         # A test that should return an error since you shouldn't have multiple defaults
