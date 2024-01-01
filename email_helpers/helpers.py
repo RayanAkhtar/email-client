@@ -16,20 +16,28 @@ class Email:
         self.sender_email = sender_email        # The sender's email
         self.password = password                # The sender's password
         self.server = None                      # The server to send the email on
-        self.login()                            # Sets up most of the user's data
+        self.success = self.login()             # Sets up most of the user's data
 
     def login(self):
-        # Sets up user data and logs in
-        if self.sender_email is None:
-            self.sender_email = input("Please enter your email address and press enter: ")
+        while True:
+            # Sets up user data and logs in
+            if self.sender_email is None:
+                self.sender_email = input("Please enter your email address and press enter: ")
 
-        if self.password is None:
-            self.password = input("Please type in your password and press enter: ")
+            if self.password is None:
+                self.password = input("Please type in your password and press enter: ")
 
-        context = ssl.create_default_context()
+            context = ssl.create_default_context()
 
-        self.server = smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
-        self.server.login(self.sender_email, self.password)
+            self.server = smtplib.SMTP_SSL("smtp.gmail.com", port, context=context)
+            try:
+                self.server.login(self.sender_email, self.password)
+                return True
+            except smtplib.SMTPAuthenticationError:
+                print("\nLogin failed, Incorrect email or password")
+                print("Do not use your email password, refer to the 'help' section for more details")
+                input("Returning to the Main menu, press 'enter' to continue")
+                return False
 
     def close(self):
         self.server.close()
@@ -67,13 +75,19 @@ class Email:
                 print(f"File not found: {file_path}")
 
 
-def get_subject(record, prompt_if_none):
+def get_subject(record, prompt_if_none, message_to_send, receivers_email):
     subject = ""
     if "subject" in record.keys():
         subject = record["subject"]
-    elif prompt_if_none:
+
+    if prompt_if_none and subject is None:
         print("No subject header was identified for this email")
+
+        print(f"The message is {message_to_send}")
+        print(f"The email is to {receivers_email}")
+
         subject = input("Enter a subject, or leave blank to ignore: ")
+
     return subject
 
 

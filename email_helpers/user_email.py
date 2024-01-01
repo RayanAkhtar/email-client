@@ -1,6 +1,6 @@
 import os
 import text_menu.user_io as io
-import email_helpers.helpers
+import email_helpers.helpers as helpers
 
 
 extensions = [".txt", ".pdf", ".docx"]
@@ -10,13 +10,16 @@ def mail(spreadsheet, column_name, is_auto):
     prompt_for_subject = True
 
     if is_auto:
-        print("Would you like to set email subjects if they are not already set in the spreadsheet?")
-        prompt_for_subject = io.get_yes_or_no() == 'y'
+        message = "Would you like to set email subjects if they are not already set in the spreadsheet?"
+        prompt_for_subject = io.get_yes_or_no(message) == 'y'
 
     user_email = helpers.Email()
-    for record in spreadsheet.records:
 
-        subject = helpers.get_subject(record, (not is_auto) or prompt_for_subject)
+    if not user_email.success:
+        return
+
+    for record in spreadsheet.records:
+        io.clear_screen()
 
         receivers_email = helpers.get_email(record, column_name)
         if receivers_email is None:
@@ -25,33 +28,50 @@ def mail(spreadsheet, column_name, is_auto):
         template = helpers.get_template_file(record, column_name)
         if template is None or receivers_email is None:
             print(f"No template found to send to {receivers_email}")
-            print("Email will not be sent\n")
+            print("Email will not be sent")
+            input("Press Enter to continue onto the next email: ")
             continue
 
         template_path = "output/" + template
 
-        message = helpers.get_message(record, column_name)
-        if message is None:
+        message_to_send = helpers.get_message(record, column_name)
+        if message_to_send is None:
             print(f"No file found under name {record[column_name]}")
-            print("File will not be sent\n")
+            print("File will not be sent")
+            input("Press Enter to continue onto the next email: ")
             continue
 
-        if not is_auto:
-            io.display_message(message)
-            print("Would you like to send this message?")
 
-            response = io.get_yes_or_no()
+        subject = helpers.get_subject(record, (not is_auto) or prompt_for_subject, message_to_send, receivers_email)
+
+
+
+
+        if not is_auto:
+            display_message = io.get_message_to_display(message_to_send)
+            display_message += "Would you like to send this message?"
+
+            response = io.get_yes_or_no(display_message)
             if response == 'n':
-                print(f"File {template} not send to {receivers_email}")
                 os.remove(template_path)
+                print(f"File {template} not sent to {receivers_email}")
+                print("File has been deleted")
+                input("Press Enter to continue onto the next email: ")
                 continue
 
         print(f"Sending file {template} to {receivers_email}")
         files = helpers.get_file_attachments(record)
 
-        user_email.send_email([receivers_email], message, subject, files)
+        user_email.send_email([receivers_email], message_to_send, subject, files)
         os.remove(template_path)
-        print(f"File {template} sent successfully to {receivers_email}\n")
+        if not is_auto:
+            print(f"File {template} sent successfully to {receivers_email}")
+            input("Press Enter to continue onto the next email: ")
+        io.clear_screen()
 
     user_email.close()
+
+    io.clear_screen()
+    print("No more emails to send")
+    input("Press enter to return to main menu: ")
 

@@ -5,21 +5,24 @@ import text_menu.user_io as io
 
 
 def menu():
-    print("""Welcome to the AI Email Client:
+    menu_funcs = {
+        1: templates.menu,
+        2: emails.menu,
+        3: help.menu,
+        4: exit
+    }
+
+    menu_string = """\
+Welcome to the AI Email Client:
     1. Create templates
     2. Send emails
     3. Help
     4. Quit
-    """)
+"""
 
-    choice = io.get_user_input(1, 4)
-    if choice == 1:
-        templates.menu()
-    elif choice == 2:
-        emails.menu()
-    elif choice == 3:
-        help.menu()
-    else:
-        print("Exiting Program")
-        exit(0)
+    io.clear_screen()
+    choice = io.get_user_input(menu_string, 1, 4)
+    io.clear_screen()
+
+    menu_funcs[choice]()
 

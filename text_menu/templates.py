@@ -6,43 +6,52 @@ import file_writer.file_writing as fw
 
 def menu():
 
-    print("\nWould you like to use a single template only")
-    choice = io.get_yes_or_no()
+    message = "Would you like to use a single template only? "
+    choice = io.get_yes_or_no(message)
+    io.clear_screen()
 
     spreadsheet = fr.read_file(get_spreadsheet_choice())
 
     if choice == 'y':  # Single file
         template = fr.read_file(get_template_choice())
     else:  # Multi file
-        template_column = get_column_name(spreadsheet, "\nPlease enter the name of the template file header")
+        template_column = get_column_name(spreadsheet, "Please enter the name of the template file header")
 
-    name_column = get_column_name(spreadsheet, "\nEnter the column name for the file name: ")
-    extension = io.get_extension("\nPlease enter the file extension: ")
+    name_column = get_column_name(spreadsheet, "Enter the column name for the file name: ")
+    extension = io.get_extension("Please enter the file extension: ")
 
     if choice == 'y':
         create_templates(template, spreadsheet, name_column, extension)
     else:
         create_multiple_templates(template_column, spreadsheet, name_column, extension)
 
+    print("Files have been created")
+    input("Press 'enter' to continue...")
+
 
 def get_template_choice():
     files = io.list_files("templates")
-    file = io.get_option_from_list(files)  # In this case, file should be the path
+    message = io.get_files_as_string(files)
+    file = io.get_option_from_list(files, message)  # In this case, file should be the path
+    io.clear_screen()
     return file
 
 
 def get_spreadsheet_choice():
     files = io.list_files("spreadsheets")
-    file = io.get_option_from_list(files)
+    message = io.get_files_as_string(files)
+    file = io.get_option_from_list(files, message)
+    io.clear_screen()
     return file
 
 
 def get_column_name(spreadsheet, message):
-    print(message)
     for i in range(len(spreadsheet.headers)):
-        print(f"Header {i + 1}: {spreadsheet.headers[i]}")
-    print("")
-    column_name = io.get_option_from_list(spreadsheet.headers)
+        message += f"\nHeader {i + 1}: {spreadsheet.headers[i]}"
+    message += "\n"
+
+    column_name = io.get_option_from_list(spreadsheet.headers, message)
+    io.clear_screen()
     return column_name
 
 
