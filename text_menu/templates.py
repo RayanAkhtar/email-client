@@ -6,6 +6,16 @@ import file_writer.file_writing as fw
 
 def menu():
 
+    no_spreadsheets = len(io.list_files("spreadsheets")) <= 0
+    no_templates = len(io.list_files("templates")) <= 0
+    if no_spreadsheets or no_templates:
+        if no_spreadsheets:
+            print("No spreadsheets found, please ensure that they are in spreadsheets/")
+        if no_templates:
+            print("No templates found, please ensure that they are in templates/")
+        input("Please press enter to return to main menu")
+        return
+
     message = "Would you like to use a single template only? "
     choice = io.get_yes_or_no(message)
     io.clear_screen()
