@@ -49,13 +49,13 @@ def generate_text_chained(prompts):
                     print("Reached max number of daily ai prompts (max 200 prompts per day)")
                     input("Press enter to return to the main menu")
                     io.clear_screen()
-                    return "FAILED"
-                time.sleep(2)
+                    return "FAILED"  # not returning an error here as this will be a repetitive error
+                time.sleep(1)
 
         final_result = completion.choices[0].message.content
         prev_results += final_result
 
-    return final_result
+    return "{" + final_result + "}"
 
 
 def get_dots(number):

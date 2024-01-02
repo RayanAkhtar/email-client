@@ -41,21 +41,22 @@ def mail(spreadsheet, column_name, is_auto):
             input("Press Enter to continue onto the next email: ")
             continue
 
+        prompt_for_subject = prompt_for_subject or not is_auto
+        subject = helpers.get_subject(record, prompt_for_subject, message_to_send, receivers_email)
 
-        subject = helpers.get_subject(record, (not is_auto) or prompt_for_subject, message_to_send, receivers_email)
+        used_ai = "{" in message_to_send
+        contains_error = "ERROR" in message_to_send
 
+        should_verify = (not is_auto) or used_ai or contains_error
+        if should_verify:
+            display_message = ("Coloured text will be used to highlight ai and errors.\n"
+                               "The email will not contain this coloured text.\n")
+            display_message += io.get_message_to_display(message_to_send)
+            display_message += "Would you like to send this message?\n"
 
-
-
-        if not is_auto:
-            display_message = io.get_message_to_display(message_to_send)
-            display_message += "Would you like to send this message?"
-
-            response = io.get_yes_or_no(display_message)
+            response = io.get_yes_or_no(display_message, True)
             if response == 'n':
-                os.remove(template_path)
                 print(f"File {template} not sent to {receivers_email}")
-                print("File has been deleted")
                 input("Press Enter to continue onto the next email: ")
                 continue
 

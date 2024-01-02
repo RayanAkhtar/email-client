@@ -1,8 +1,11 @@
 import os
+import text_formatter.text_formatting as tf
+from colorama import Fore, Style
 
 template_extensions = ['txt', 'pdf', 'docx']        # Supported template file extensions
 spreadsheet_extensions = ['xlsx', 'csv']            # Supported spreadsheet extensions
-
+delim_start = "{[?"
+delim_end = "}]?"
 
 def get_user_input(message, lower_bound, upper_bound):
     print(message)
@@ -17,8 +20,11 @@ def get_user_input(message, lower_bound, upper_bound):
         print(f"Incorrect input, please try again")
 
 
-def get_yes_or_no(message):
-    print(message)
+def get_yes_or_no(message, use_colour=False):
+    if use_colour:
+        colour_print(message)
+    else:
+        print(message)
     while True:
         choice = input("Please enter [Y]es or [N]o: ").lower().strip()
         if choice.startswith('y'):
@@ -28,7 +34,10 @@ def get_yes_or_no(message):
             clear_screen()
             return 'n'
         clear_screen()
-        print(message)
+        if use_colour:
+            colour_print(message)
+        else:
+            print(message)
         print("Input not recognised, please try again")
 
 
@@ -88,7 +97,29 @@ def get_files_as_string(files):
 
 
 def get_message_to_display(message):
-    return "This is what the email body will look like:\n" + message + "\n"
+    return "This is what the email body will look like:\n\n" + message + "\n\n"
+
+
+def colour_print(message):
+    char_ptr = 0
+    red_colour = False
+    while char_ptr < len(message):
+        char = message[char_ptr]
+        char_ptr += 1
+
+        if char in delim_start:
+            red_colour = True
+        elif char in delim_end:
+            red_colour = False
+        else:
+            print_colour(char, red_colour)
+
+
+def print_colour(char, red_colour):
+    if red_colour:
+        print(Fore.RED + char + Style.RESET_ALL, end='')
+    else:
+        print(char, end='')
 
 
 def clear_screen():
