@@ -1,17 +1,33 @@
 # email-client
-A python-based project to support automation of emails with text reformatting including the use of AI-Generated prompts
+A python based project to support automation of emails with text reformatting including the use of AI-Generated prompts.
 
 
 # Prerequisites
+
+## Spreadsheet and Template File
+Before running the program, you should create a spreadsheet and template file.
+The spreadsheet should be stored in the `spreadsheets` directory, it must be a csv or xlsx file.
+Similarly, the template should be stored in the `templates` directory, it must be a txt, pdf or docx file.
+Information on spreadsheet and template formatting will be explained in a later section.
+
+## Gmail Account setup with 2FA and App Key
 In order to use the email client, you will need to have a gmail account.
-Then, click on your profile and go to 'Manage your google account', from here, go to 'security', turn on 'two step verification' and head into that section,
-After this, go to 'App passwords' and type in any name for this. Keep track of the password as you will need to use this when logging in.
-When it comes to typing in your password, you will use this instead of your gmail password.
+I would recommend making a new account, especially if you are sending a large number of emails.
+When you have created an account, click on your profile and go to 'Manage your Google Account', from here, go to 'security', turn on 'two-step verification' and head into that section,
+After that, go to 'App passwords' and type in any name for this.
 <br>
+Keep track of the password as you will need to use this when logging in.
+When it comes to typing in your password, you will use this instead of your gmail password.
 It is important to note that it is essential to keep this password safe and secure as other people will be able to access your account using this password too.
-<br><br>
-Before running the program, you should create a spreadsheet file and a template file, putting them in the `spreadsheets` and `templates` folders respectively.
-More detail on the format of templates and spreadsheets will be provided below.
+
+## Open AI Account with API Key
+To use AI formatting, you will need to create an openAI account, to do that, head to https://openai.com/blog/openai-api and create an account.
+Once the account is created, go to the 'API keys' section and then copy the key.
+When prompted for your API Key, paste it and continue.
+The performance of the program will depend on the type of OpenAI subscription you have due to the rate limiting on API requests.
+
+
+
 
 # How to use
 
@@ -29,7 +45,7 @@ In order to make use of the program, you will want a template. Ideally, this sho
 It is heavily recommended to avoid creating pdf files as this is a lengthy process, as opposed to the creation of docx and txt files.
 There are different types of ways you can reformat a template:
 
-### 1. Strict Text Replacement '[s]'
+### 1. Strict Text Replacement
 With Strict Text Replacement, you are able to replace text with data held in the column of a csv table. For example, suppose you have a column called ```name``` in the csv file, then if you have ```[name]``` at any point in your template, the program will replace the text with that held in the table. Please note that you will need to provide a default value if you leave an entry empty in the spreadsheet file, otherwise your template will contain ```ERROR``` at the selected point, this will help highlight if you are missing any details in your spreadsheet file, or if you were supposed to have a default value there.
 <br>
 In order to have a default value in your text replacement, you can use the ```:``` sign to indicate a default value. For example, if you were to have ```[Name:Tom]``` in your file, then the program will check the record in the spreadsheet file for column ```Name```, and if there is no value, it will be replaced with ```Tom```.
@@ -63,13 +79,15 @@ In order to pass the current state of the text replacement, you can use `[self]`
 Here is an example command `{Tell me about company x; use the following text to show why I am a good fit for the company [cv.pdf]; now use this data to finish off the following paragraph, only write a few sentances: [self]}`.
 
 
+
 ## Formatting the spreadsheet file
 It is optional to provide a spreadsheet file to the program, it must be in either `.csv` or `.xls` format in order to be processed correctly. Along with this, if you wish to use strict and optional text replacements, the column name must match the keyword held within `[]` and `#`. The column names will be converted to lowercase before use in both the template and the spreadsheet file, please keep this in mind. Also, it is best to use `_` or `-` to space words as opposed to a normal space character.
 In the spreadsheet file, there are a few keywords that should be provided if you wish to send emails to users, they can also be used in the text replacement program if you wish:
 <br>
-1. `email_address` - This field **must** be filled in to send an email to the company of your choosing.
+1. `email` - This field **must** be filled in to send an email to the company of your choosing.
 2. `subject` - This field can be included to provide a subject to the email. By default, AI will be used, in order to keep it blank, create a `subject` row and leave blank with an empty default value.
-3. `file_n` - You can send multiple files using the email client at the end of an email, to do this, you will need columns such as `file_1`, `file_2`, and so on.
+3. `file_n` - You can send multiple files using the email client at the end of an email, to do this, you will need columns such as `file_1`, `file_2`, and so on. Numbers must be contiguous, starting from 1.
+
 
 
 ## Example Template and CSV file
@@ -83,7 +101,7 @@ I hope this email finds you in good health. I am a student at university x, hopi
 
 ? field name
 #computer_science 
-Paragraph here containing text about your experience in computer_science 
+Paragraph here containing text about your experience in computer_science.
 
 #software_development 
 Same but for software development
@@ -98,6 +116,8 @@ A default paragraph if you want
 
 More email content.
 
+{tell me about [company_name]; Use this data write a paragraph to end this application [self]. Use my cv for reference: [cv]}
+
 I hope to hear from you soon,
 
 Kindest Regards,
@@ -111,9 +131,11 @@ Dear Hiring Manager,
 
 I hope this email finds you in good health. I am a student at university x, hoping to seek an internship in Computer Science at company x. I would like to apply here as I am interested in your innovations in ....
 
-Paragraph here containing text about your experience in computer_science 
+Paragraph here containing text about your experience in computer_science.
 
 More email content.
+
+A paragraph here that uses data on company x as well as your cv data to form an appropriate reply for the application.
 
 I hope to hear from you soon,
 

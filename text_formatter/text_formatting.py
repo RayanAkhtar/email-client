@@ -1,4 +1,5 @@
 import file_reader.file_reader as fr
+import ai_text_generator.generator as generator
 
 text_file_extensions = ["txt", "pdf", "docx"]
 
@@ -10,26 +11,40 @@ class TextFormatter:
         self.output_text = ""                       # The output text to return once the text is formatted correctly
         self.pos = 0                                # A position to keep track of the current formatting state
         self.dictionary = dictionary                # A record from a csv file, should be passed in as a mapping
-        self.delimiters = "{}[]?"                   # Delimiters to trigger a string format
+        self.delimiters = "{[?"                     # Delimiters to trigger a string format
+
+    def format_text_helper(self, end_char, func):
+        if end_char not in self.input_text[self.pos:]:
+            self.output_text += self.input_text[self.pos - 1:]
+            self.pos = len(self.output_text)
+            return ""
+
+        text = self.get_until(end_char)
+        return_val = func(text)
+        if return_val is None:
+            return None
+        self.output_text += func(text)
+        return ""
 
     def format_text(self):
+
+        format_text_funcs = {
+            '[': [self.square_format, ']'],
+            '{': [self.curly_format, '}'],
+            '?': [self.optional_format, '?']
+        }
+
         # Runs over the input text and formats where necessary
         while self.pos < len(self.input_text):
             char = self.input_text[self.pos]
             self.pos += 1
             if char in self.delimiters:
-                if char == '[':  # Strict formatting
-                    text = self.get_until("]")
-                    self.output_text += (self.square_format(text))
-                elif char == '{':  # AI-Generated formatting
-                    text = self.get_until("}")
-                    self.output_text += (self.curly_format(text))
-                elif char == '?':  # Optional formatting
-                    text = self.get_until("?")
-                    self.output_text += (self.optional_format(text))
-                else:
-                    print("Invalid character in delimiter set")
-                    exit(-1)
+                format_func = format_text_funcs[char][0]
+                char_end = format_text_funcs[char][1]
+                result = self.format_text_helper(char_end, format_func)
+                if result is None:
+                    self.output_text = None
+                    return
             else:
                 self.output_text += char
 
@@ -40,9 +55,6 @@ class TextFormatter:
         while self.input_text[self.pos] not in delims:
             text += self.input_text[self.pos]
             self.pos += 1
-            if self.pos >= len(self.input_text):
-                print(f"No delimiter found: {delims}")
-                exit(-1)
         self.pos += 1
         return text
 
@@ -53,10 +65,13 @@ class TextFormatter:
             assert extension in text_file_extensions
             file_data = fr.read_file(text)
             if file_data is None:
-                return "Error: NO FILE DATA"
+                return "[Error: NO FILE DATA]"
             return file_data
 
-        default = "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
+        if text == "self":
+            return self.output_text
+
+        default = "[ERROR: NO DEFAULT VALUE FOUND]"
         key = text
 
         if ":" in text:
@@ -67,19 +82,22 @@ class TextFormatter:
         if key not in self.dictionary.keys():
             return default
         result = self.dictionary[key]
-        if result == None:
-            return f"ERROR: No value found in spreadsheet for {key}"
+        if result is None:
+            return f"[ERROR: NO VALUE IN SPREADSHEET FOR {key}]"
         return result
 
     def curly_format(self, text):
-        # AI-Generated formatting is done here
-        # todo later in ai-text part
-        return
+        formatted_text = self.recurse(text)
+        if formatted_text is None:
+            self.output_text = None
+            return None
+        return generator.generate_text_chained(formatted_text)
+
 
     def optional_format(self, text):
         # Optional formatting is done here
         if text.count("~") > 1:
-            return "ERROR: MULTIPLE DEFAULTS"
+            return "?ERROR: MULTIPLE DEFAULTS?"
 
         formatted = OptionalFormatter(text)
 
@@ -91,7 +109,7 @@ class TextFormatter:
             return self.recurse(formatted.options[option])
 
         if formatted.default == "":
-            return "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
+            return "?ERROR: NO DEFAULT VALUE FOUND?"
         return self.recurse(formatted.default)
 
     def recurse(self, text):
