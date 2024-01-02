@@ -1,9 +1,0 @@
-spreadsheet_files/*
-text_files/*
-spreadsheet_files
-text_files
-*.pdf
-*.docx
-*.txt
-*.csv
-*.xlsx
