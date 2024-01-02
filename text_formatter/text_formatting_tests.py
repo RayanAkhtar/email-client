@@ -1,5 +1,4 @@
 import unittest
-
 from text_formatter.text_formatting import TextFormatter
 
 
@@ -9,7 +8,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_incorrect_square(self):
         dummy_text = "Hello [Greeting"
-        formatter = TextFormatter(dummy_text, {"Greeting":"World"})
+        formatter = TextFormatter(dummy_text, {"Greeting": "World"})
         formatter.format_text()
         self.assertEqual("Hello [Greeting", formatter.output_text)
 
@@ -111,11 +110,19 @@ class MyTestCase(unittest.TestCase):
         result = "Hello World\nThis should be the second line  \n\nThis should be the third line  "
         self.assertEqual(result, formatter.output_text)
 
+    def test_self(self):
+        dummy_text = "Hello, this message should repeat itself on the next line\n[self]"
+        dictionary = {}
+        formatter = TextFormatter(dummy_text, dictionary)
+        formatter.format_text()
+        result = "Hello, this message should repeat itself on the next line\n" + \
+                 "Hello, this message should repeat itself on the next line\n"
+        self.assertEqual(result, formatter.output_text)
     ########################            TESTING OPTIONAL TEXT FORMATTING            ########################
 
     def test_incorrect_curly(self):
         dummy_text = "Hello {Greeting"
-        formatter = TextFormatter(dummy_text, {"Greeting":"World"})
+        formatter = TextFormatter(dummy_text, {"Greeting": "World"})
         formatter.format_text()
         self.assertEqual("Hello {Greeting", formatter.output_text)
 
@@ -149,7 +156,7 @@ class MyTestCase(unittest.TestCase):
         ~This is the default
         ?"""
 
-        dictionary = {"1 option to search":"SUCCESS"}
+        dictionary = {"1 option to search": "SUCCESS"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -163,7 +170,7 @@ class MyTestCase(unittest.TestCase):
         This should not be the answer and should instead print "ERROR: NO OPTION MATCH AND NO DEFAULT VALUE"
         ?"""
 
-        dictionary = {"1 option to search":"FAIL"}
+        dictionary = {"1 option to search": "FAIL"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -178,7 +185,7 @@ class MyTestCase(unittest.TestCase):
         ~This is the default and should be the answer
         ?"""
 
-        dictionary = {"1 option to search":"FAIL"}
+        dictionary = {"1 option to search": "FAIL"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -197,7 +204,7 @@ class MyTestCase(unittest.TestCase):
         ~This is the default and should not be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 1"}
+        dictionary = {"3 options to search": "SUCCESS 1"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -216,7 +223,7 @@ class MyTestCase(unittest.TestCase):
         ~This is the default and should not be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 2"}
+        dictionary = {"3 options to search": "SUCCESS 2"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -235,7 +242,7 @@ class MyTestCase(unittest.TestCase):
         ~This is the default and should not be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 3"}
+        dictionary = {"3 options to search": "SUCCESS 3"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -254,7 +261,7 @@ class MyTestCase(unittest.TestCase):
         ~This is the default and should be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 4"}
+        dictionary = {"3 options to search": "SUCCESS 4"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -272,7 +279,7 @@ class MyTestCase(unittest.TestCase):
         This should not be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 1"}
+        dictionary = {"3 options to search": "SUCCESS 1"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -290,7 +297,7 @@ class MyTestCase(unittest.TestCase):
         This should not be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 2"}
+        dictionary = {"3 options to search": "SUCCESS 2"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -308,7 +315,7 @@ class MyTestCase(unittest.TestCase):
         This should be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 3"}
+        dictionary = {"3 options to search": "SUCCESS 3"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -327,7 +334,7 @@ class MyTestCase(unittest.TestCase):
         This should not be the answer
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 4"}
+        dictionary = {"3 options to search": "SUCCESS 4"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -342,7 +349,7 @@ class MyTestCase(unittest.TestCase):
         ~ There should not be multiple defaults
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 1"}
+        dictionary = {"3 options to search": "SUCCESS 1"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -359,7 +366,7 @@ class MyTestCase(unittest.TestCase):
         ~ There should not be multiple defaults
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 1"}
+        dictionary = {"3 options to search": "SUCCESS 1"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -380,7 +387,7 @@ class MyTestCase(unittest.TestCase):
         ~ There should not be multiple defaults
         ?"""
 
-        dictionary = {"3 options to search":"SUCCESS 1"}
+        dictionary = {"3 options to search": "SUCCESS 1"}
 
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
@@ -395,7 +402,7 @@ class MyTestCase(unittest.TestCase):
         #paragraph 1
         text 1
         ~ default paragraph here"""
-        formatter = TextFormatter(dummy_text, {"Greeting":"World"})
+        formatter = TextFormatter(dummy_text, {"Greeting": "World"})
         formatter.format_text()
         self.assertEqual(dummy_text, formatter.output_text)
 
@@ -410,7 +417,7 @@ class MyTestCase(unittest.TestCase):
         ~This should contain none of my data
         ?"""
 
-        dictionary = {"planet": "World", "paragraph to choose": "p1", "name":"Rayan"}
+        dictionary = {"planet": "World", "paragraph to choose": "p1", "name": "Rayan"}
 
         formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
@@ -432,7 +439,8 @@ class MyTestCase(unittest.TestCase):
         ~This should contain none of my data
         ?"""
 
-        dictionary = {"planet": "World", "paragraph to choose": "p1", "name":"Rayan", "project":"email_helpers client"}
+        dictionary = {"planet": "World", "paragraph to choose": "p1", "name": "Rayan",
+                      "project": "email_helpers client"}
 
         formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
@@ -442,10 +450,6 @@ class MyTestCase(unittest.TestCase):
         This should then output my project: email_helpers client"""
 
         self.assertEqual(result, formatter.output_text)
-
-    ########################            TESTING AI-GENERATED TEXT FORMATTING            ########################
-
-    # todo: Will implement tests upon completion of the ai part
 
 
 if __name__ == '__main__':

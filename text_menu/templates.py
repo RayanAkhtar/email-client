@@ -59,15 +59,23 @@ def create_templates(template, spreadsheet, name_column, extension):
     for row in spreadsheet.records:
         formatter = tf.TextFormatter(template, row)
         formatter.format_text()
-        fw.save_formatted_file(formatter.output_text, row[name_column], extension, "output/")
+        if formatter.output_text is not None:
+            fw.save_formatted_file(formatter.output_text, row[name_column], extension, "output/")
+        else:
+            return
 
 
 def create_multiple_templates(template_column, spreadsheet, name_column, extension):
     all_templates = io.get_all_files_in_directory("templates/", ["txt", "pdf", "docx"])
     loaded_templates = {}
     failed_templates = []
+    failed = False
 
     for row in spreadsheet.records:
+        if failed:
+            failed_templates.append(row[name_column])
+            continue
+
         if row[template_column] not in all_templates:
             print(f"ERROR IN {row[name_column]}: {row[template_column]} not found in templates folder")
             failed_templates.append(row[name_column])
@@ -78,8 +86,13 @@ def create_multiple_templates(template_column, spreadsheet, name_column, extensi
 
         formatter = tf.TextFormatter(loaded_templates[template_column], row)
         formatter.format_text()
-        fw.save_formatted_file(formatter.output_text, row[name_column], extension)
+        if formatter.output_text is not None:
+            fw.save_formatted_file(formatter.output_text, row[name_column], extension)
+        else:
+            failed_templates.append(row[name_column])
+            failed = True
 
+    io.clear_screen()
     print("\nFinished template creation")
     if len(failed_templates) > 0:
         print("Failed templates:")
@@ -88,6 +101,7 @@ def create_multiple_templates(template_column, spreadsheet, name_column, extensi
         print("The rest of the files have been successfully created\n")
     else:
         print("All templates were successfully created\n")
+    input("Press enter to return to the main menu: ")
 
 
 
