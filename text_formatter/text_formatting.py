@@ -1,4 +1,5 @@
 import file_reader.file_reader as fr
+import ai_text_generator.generator as generator
 
 text_file_extensions = ["txt", "pdf", "docx"]
 
@@ -16,10 +17,14 @@ class TextFormatter:
         if end_char not in self.input_text[self.pos:]:
             self.output_text += self.input_text[self.pos - 1:]
             self.pos = len(self.output_text)
-            return
+            return ""
 
         text = self.get_until(end_char)
+        return_val = func(text)
+        if return_val is None:
+            return None
         self.output_text += func(text)
+        return ""
 
     def format_text(self):
 
@@ -36,7 +41,10 @@ class TextFormatter:
             if char in self.delimiters:
                 format_func = format_text_funcs[char][0]
                 char_end = format_text_funcs[char][1]
-                self.format_text_helper(char_end, format_func)
+                result = self.format_text_helper(char_end, format_func)
+                if result is None:
+                    self.output_text = None
+                    return
             else:
                 self.output_text += char
 
@@ -60,6 +68,9 @@ class TextFormatter:
                 return "Error: NO FILE DATA"
             return file_data
 
+        if text == "self":
+            return self.output_text
+
         default = "ERROR: NO DEFAULT VALUE FOUND"
         key = text
 
@@ -76,9 +87,12 @@ class TextFormatter:
         return result
 
     def curly_format(self, text):
-        # AI-Generated formatting is done here
-        # todo later in ai-text part
-        return
+        formatted_text = self.recurse(text)
+        if formatted_text is None:
+            self.output_text = None
+            return None
+        return generator.generate_text_chained(formatted_text)
+
 
     def optional_format(self, text):
         # Optional formatting is done here
