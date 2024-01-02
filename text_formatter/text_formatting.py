@@ -65,13 +65,13 @@ class TextFormatter:
             assert extension in text_file_extensions
             file_data = fr.read_file(text)
             if file_data is None:
-                return "Error: NO FILE DATA"
+                return "[Error: NO FILE DATA]"
             return file_data
 
         if text == "self":
             return self.output_text
 
-        default = "ERROR: NO DEFAULT VALUE FOUND"
+        default = "[ERROR: NO DEFAULT VALUE FOUND]"
         key = text
 
         if ":" in text:
@@ -83,7 +83,7 @@ class TextFormatter:
             return default
         result = self.dictionary[key]
         if result is None:
-            return f"ERROR: NO VALUE IN SPREADSHEET FOR {key}"
+            return f"[ERROR: NO VALUE IN SPREADSHEET FOR {key}]"
         return result
 
     def curly_format(self, text):
@@ -97,7 +97,7 @@ class TextFormatter:
     def optional_format(self, text):
         # Optional formatting is done here
         if text.count("~") > 1:
-            return "ERROR: MULTIPLE DEFAULTS"
+            return "?ERROR: MULTIPLE DEFAULTS?"
 
         formatted = OptionalFormatter(text)
 
@@ -109,7 +109,7 @@ class TextFormatter:
             return self.recurse(formatted.options[option])
 
         if formatted.default == "":
-            return "ERROR: NO DEFAULT VALUE FOUND"
+            return "?ERROR: NO DEFAULT VALUE FOUND?"
         return self.recurse(formatted.default)
 
     def recurse(self, text):

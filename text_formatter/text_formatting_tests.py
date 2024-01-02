@@ -67,7 +67,7 @@ class MyTestCase(unittest.TestCase):
         dictionary = {}
         formatter = TextFormatter(dummy_text, dictionary)
         formatter.format_text()
-        result = "The next word should be ERROR: ERROR: NO DEFAULT VALUE FOUND"
+        result = "The next word should be ERROR: [ERROR: NO DEFAULT VALUE FOUND]"
         self.assertEqual(result, formatter.output_text)
 
     def test_file_txt(self):
@@ -175,7 +175,7 @@ class MyTestCase(unittest.TestCase):
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
-        self.assertEqual("ERROR: NO DEFAULT VALUE FOUND", formatter.output_text)
+        self.assertEqual("?ERROR: NO DEFAULT VALUE FOUND?", formatter.output_text)
 
     def test_single_option_with_default(self):
         # A check to see that the default will be selected when no options can be selected
@@ -339,7 +339,7 @@ class MyTestCase(unittest.TestCase):
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
-        self.assertEqual("ERROR: NO DEFAULT VALUE FOUND", formatter.output_text)
+        self.assertEqual("?ERROR: NO DEFAULT VALUE FOUND?", formatter.output_text)
 
     def test_multiple_defaults_no_options(self):
         # A test that should return an error since you shouldn't have multiple defaults
@@ -354,7 +354,7 @@ class MyTestCase(unittest.TestCase):
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
-        self.assertEqual("ERROR: MULTIPLE DEFAULTS", formatter.output_text)
+        self.assertEqual("?ERROR: MULTIPLE DEFAULTS?", formatter.output_text)
 
     def test_multiple_defaults_single_options(self):
         # Same as above, a value shouldn't be selected if there are multiple defaults
@@ -371,7 +371,7 @@ class MyTestCase(unittest.TestCase):
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
-        self.assertEqual("ERROR: MULTIPLE DEFAULTS", formatter.output_text)
+        self.assertEqual("?ERROR: MULTIPLE DEFAULTS?", formatter.output_text)
 
     def test_multiple_defaults_multiple_options(self):
         # Same as above, except with multiple options
@@ -392,7 +392,7 @@ class MyTestCase(unittest.TestCase):
         formatter = TextFormatter(input_text, dictionary)
         formatter.format_text()
 
-        self.assertEqual("ERROR: MULTIPLE DEFAULTS", formatter.output_text)
+        self.assertEqual("?ERROR: MULTIPLE DEFAULTS?", formatter.output_text)
 
     ########################            TESTING NON-AI MIXED TEXT FORMATTING            ########################
 

@@ -93,7 +93,7 @@ def create_multiple_templates(template_column, spreadsheet, name_column, extensi
             failed = True
 
     io.clear_screen()
-    print("\nFinished template creation")
+    print("Finished template creation")
     if len(failed_templates) > 0:
         print("Failed templates:")
         for template in failed_templates:

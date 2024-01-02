@@ -51,6 +51,7 @@ class Email:
             self.msg["From"] = self.sender_email
             self.msg["To"] = recipient
 
+            message = strip_brackets(message)
             self.msg.attach(MIMEText(message, "plain"))
             self.attach_files(files)
 
@@ -132,3 +133,12 @@ def get_file_attachments(record):
         i += 1
 
     return files
+
+
+def strip_brackets(message):
+    to_remove = "{}[]?"
+    translation_table = str.maketrans("", "", to_remove)
+    stripped_message = message.translate(translation_table)
+    return stripped_message
+
+
