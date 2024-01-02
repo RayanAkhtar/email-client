@@ -2,7 +2,7 @@ import text_menu.user_io as io
 import file_reader.file_reader as fr
 import text_formatter.text_formatting as tf
 import file_writer.file_writing as fw
-
+import os
 
 def menu():
 
@@ -67,6 +67,8 @@ def get_column_name(spreadsheet, message):
 
 def create_templates(template, spreadsheet, name_column, extension):
     for row in spreadsheet.records:
+        if file_exists(name_column, row, extension):
+            continue
         formatter = tf.TextFormatter(template, row)
         formatter.format_text()
         if formatter.output_text is not None:
@@ -82,8 +84,12 @@ def create_multiple_templates(template_column, spreadsheet, name_column, extensi
     failed = False
 
     for row in spreadsheet.records:
+
         if failed:
             failed_templates.append(row[name_column])
+            continue
+
+        if file_exists(name_column, row, extension):
             continue
 
         if row[template_column] not in all_templates:
@@ -114,5 +120,12 @@ def create_multiple_templates(template_column, spreadsheet, name_column, extensi
     input("Press enter to return to the main menu: ")
 
 
-
+def file_exists(name_column, record, extension):
+    file_path = "output/" + record[name_column] + "." + extension
+    io.clear_screen()
+    if os.path.exists(file_path):
+        print(f"File {file_path} currently exists, this record will not be reformatted")
+        input("Press enter to continue onto the next email: ")
+        return True
+    return False
 
