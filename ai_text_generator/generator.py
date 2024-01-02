@@ -1,17 +1,24 @@
 import os
 import time
+
+import dotenv
+
 import text_menu.user_io as io
 import openai
 from openai import OpenAI
 from dotenv import load_dotenv
 
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-client = OpenAI()
-
 
 def generate_text_chained(prompts):
+    load_dotenv()
+    if os.getenv("OPENAI_API_KEY") is None:
+        key = input("Please enter your OpenAI API Key: ")
+        dotenv.set_key(".env", "OPENAI_API_KEY", key)
+        load_dotenv()
+
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+    client = OpenAI()
+
     # Takes in multiple prompts and outputs the result, using the previous result to form the next result
     prompts = prompts.split(";")
 
@@ -47,10 +54,16 @@ def generate_text_chained(prompts):
 
                 if curr_time > 60:
                     print("Reached max number of daily ai prompts (max 200 prompts per day)")
-                    input("Press enter to return to the main menu")
+                    input("Press enter to return to the main menu: ")
                     io.clear_screen()
-                    return "FAILED"  # not returning an error here as this will be a repetitive error
+                    return "{FAILED}"  # not returning an error here as this will be a repetitive error
                 time.sleep(1)
+            except openai.AuthenticationError:
+                print(f"Incorrect API Key: {openai.api_key}")
+                print("You may need to reset this, you can do so in the main menu")
+                input("Press enter to return to the main menu: ")
+                io.clear_screen()
+                return "{FAILED}"
 
         final_result = completion.choices[0].message.content
         prev_results += final_result

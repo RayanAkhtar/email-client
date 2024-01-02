@@ -43,6 +43,7 @@ def mail(spreadsheet, column_name, is_auto):
 
         prompt_for_subject = prompt_for_subject or not is_auto
         subject = helpers.get_subject(record, prompt_for_subject, message_to_send, receivers_email)
+        io.clear_screen()
 
         used_ai = "{" in message_to_send
         contains_error = "ERROR" in message_to_send

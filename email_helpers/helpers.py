@@ -5,7 +5,11 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import dotenv
+import text_menu.user_io as io
+
 import file_reader.file_reader as fr
+from dotenv import load_dotenv
 
 port = 465
 
@@ -22,10 +26,20 @@ class Email:
         while True:
             # Sets up user data and logs in
             if self.sender_email is None:
-                self.sender_email = input("Please enter your email address and press enter: ")
+                load_dotenv()
+                self.sender_email = os.getenv("GMAIL_EMAIL")
+                if self.sender_email is None:
+                    self.sender_email = input("Please enter your email address and press enter: ")
+                    dotenv.set_key(".env", "GMAIL_EMAIL", self.sender_email)
+                    load_dotenv()
 
             if self.password is None:
-                self.password = input("Please type in your password and press enter: ")
+                load_dotenv()
+                self.password = os.getenv("GMAIL_PASSWORD")
+                if self.password is None:
+                    self.password = input("Please enter your email's app key: ")
+                    dotenv.set_key(".env", "GMAIL_PASSWORD", self.password)
+                    load_dotenv()
 
             context = ssl.create_default_context()
 
@@ -84,7 +98,7 @@ def get_subject(record, prompt_if_none, message_to_send, receivers_email):
     if prompt_if_none and subject is None:
         print("No subject header was identified for this email")
 
-        print(f"The message is {message_to_send}")
+        io.colour_print(f"The message is \n\n{message_to_send}\n\n")
         print(f"The email is to {receivers_email}")
 
         subject = input("Enter a subject, or leave blank to ignore: ")

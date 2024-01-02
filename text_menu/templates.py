@@ -71,10 +71,10 @@ def create_templates(template, spreadsheet, name_column, extension):
             continue
         formatter = tf.TextFormatter(template, row)
         formatter.format_text()
-        if formatter.output_text is not None:
-            fw.save_formatted_file(formatter.output_text, row[name_column], extension, "output/")
-        else:
+        if formatter.output_text is None:
             return
+        else:
+            fw.save_formatted_file(formatter.output_text, row[name_column], extension, "output/")
 
 
 def create_multiple_templates(template_column, spreadsheet, name_column, extension):
@@ -102,7 +102,7 @@ def create_multiple_templates(template_column, spreadsheet, name_column, extensi
 
         formatter = tf.TextFormatter(loaded_templates[template_column], row)
         formatter.format_text()
-        if formatter.output_text is not None:
+        if formatter.output_text is not None and "{FAILED}" not in formatter.output_text:
             fw.save_formatted_file(formatter.output_text, row[name_column], extension)
         else:
             failed_templates.append(row[name_column])
@@ -113,7 +113,7 @@ def create_multiple_templates(template_column, spreadsheet, name_column, extensi
     if len(failed_templates) > 0:
         print("Failed templates:")
         for template in failed_templates:
-            print("\t" + template)
+            print("\t" + template + "." + extension)
         print("The rest of the files have been successfully created\n")
     else:
         print("All templates were successfully created\n")
