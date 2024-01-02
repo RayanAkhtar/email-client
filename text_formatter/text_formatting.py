@@ -23,7 +23,7 @@ class TextFormatter:
         return_val = func(text)
         if return_val is None:
             return None
-        self.output_text += func(text)
+        self.output_text += return_val
         return ""
 
     def format_text(self):
@@ -41,10 +41,7 @@ class TextFormatter:
             if char in self.delimiters:
                 format_func = format_text_funcs[char][0]
                 char_end = format_text_funcs[char][1]
-                result = self.format_text_helper(char_end, format_func)
-                if result is None:
-                    self.output_text = None
-                    return
+                self.format_text_helper(char_end, format_func)
             else:
                 self.output_text += char
 
@@ -65,7 +62,7 @@ class TextFormatter:
             assert extension in text_file_extensions
             file_data = fr.read_file(text)
             if file_data is None:
-                return "[Error: NO FILE DATA]"
+                return "[ERROR: NO FILE DATA]"
             return file_data
 
         if text == "self":
@@ -88,9 +85,9 @@ class TextFormatter:
 
     def curly_format(self, text):
         formatted_text = self.recurse(text)
-        if formatted_text is None:
+        if formatted_text is None or "{FAILED}" in formatted_text:
             self.output_text = None
-            return None
+            return
         return generator.generate_text_chained(formatted_text)
 
 

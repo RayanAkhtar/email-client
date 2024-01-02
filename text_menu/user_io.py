@@ -1,4 +1,5 @@
 import os
+import dotenv
 import text_formatter.text_formatting as tf
 from colorama import Fore, Style
 
@@ -128,3 +129,32 @@ def clear_screen():
     else:
         os.system('clear')
     print()
+
+
+def print_current_email_data():
+    dotenv.load_dotenv()
+    email = os.getenv("GMAIL_EMAIL")
+    password = os.getenv("GMAIL_PASSWORD")
+
+    clear_screen()
+    print("Email data:")
+
+    if email is None:
+        print("\tEmail not found")
+    else:
+        print(f"\t Email - {email}")
+
+    if password is None:
+        print("\tApp key not found")
+    else:
+        print(f"\t App Key - {password}")
+
+
+def print_current_api_key():
+    dotenv.load_dotenv()
+    api_key = os.getenv("OPENAI_API_KEY")
+    clear_screen()
+    if api_key is None:
+        print("\tAPI key not found")
+    else:
+        print(f"API Key - {api_key}")

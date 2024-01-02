@@ -6,7 +6,8 @@ def menu():
     menu_dict = {
         1: template_help,
         2: spreadsheet_help,
-        3: email_help
+        3: email_help,
+        4: skip
     }
 
     message = """\
@@ -210,3 +211,6 @@ Press enter to continue: """
     input(email_help_section)
     io.clear_screen()
 
+
+def skip():
+    pass
