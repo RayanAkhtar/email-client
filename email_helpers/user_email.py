@@ -56,9 +56,7 @@ def mail(spreadsheet, column_name, is_auto):
 
             response = io.get_yes_or_no(display_message, True)
             if response == 'n':
-                os.remove(template_path)
                 print(f"File {template} not sent to {receivers_email}")
-                print("File has been deleted")
                 input("Press Enter to continue onto the next email: ")
                 continue
 
