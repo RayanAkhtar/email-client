@@ -1,5 +1,7 @@
 import os
 
+import dotenv
+
 import text_menu.help as help
 import text_menu.emails as emails
 import text_menu.templates as templates
@@ -12,8 +14,9 @@ def menu():
         del os.environ["GMAIL_EMAIL"]
     if "GMAIL_PASSWORD" in os.environ:
         del os.environ["GMAIL_PASSWORD"]
-    if "OPEN_API_KEY" in os.environ:
+    if "OPENAI_API_KEY" in os.environ:
         del os.environ["OPENAI_API_KEY"]
+    dotenv.load_dotenv()
 
     menu_funcs = {
         1: templates.menu,
